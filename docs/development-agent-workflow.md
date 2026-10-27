@@ -88,7 +88,7 @@ Keep `learnings/reference/agent-workflow-report.html` as the workflow/index repo
 
 - Local Git baseline: `a592399`; existing application plus prepared GitHub Actions.
 - Local job-equivalent verification passed: 75 backend tests, Linux frontend/prototype builds and documentation checks. These are historical checks, not a result for a future Kilo change.
-- The GitHub remote is connected; the code push and first hosted CI run currently await the GitHub workflow permission grant.
+- The GitHub remote is connected and the code is pushed. [First hosted CI run](https://github.com/Chookai/procurement-system/actions/runs/40529064988) passed both jobs, including all 75 backend tests, for commit `812a7e1`.
 - Existing browser scripts are local tools; portable fixture-based CI browser coverage is still proposed.
 - `REVIEW.md`, a trusted verification runner and the portable browser CI job are proposed additions, not installed by this document update.
 - No Kilo connector, automatic task dispatch, fresh review session, automatic repairs, merge or Azure deployment was launched.

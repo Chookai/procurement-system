@@ -101,7 +101,7 @@ Backend tests use temporary database schemas; the application records remain in 
 
 ## Version control and CI
 
-Local Git history starts with the current implementation as a baseline. GitHub Actions is prepared in [.github/workflows/ci.yml](.github/workflows/ci.yml) for frontend/docs and PostgreSQL-backed backend checks. The remote is `Chookai/procurement-system`; the code push and hosted CI run currently await the GitHub workflow permission grant. See the [interactive plan](learnings/reference/git-ci-cd-plan.html) and [execution details](docs/git-ci-cd.md). Azure deployment follows after infrastructure and release prerequisites are configured.
+Local Git history starts with the current implementation as a baseline. GitHub Actions is prepared in [.github/workflows/ci.yml](.github/workflows/ci.yml) for frontend/docs and PostgreSQL-backed backend checks. The remote is `Chookai/procurement-system`; the code is pushed and [the first hosted CI run](https://github.com/Chookai/procurement-system/actions/runs/40529064988) passed both jobs, including 75 backend tests. See the [interactive plan](learnings/reference/git-ci-cd-plan.html) and [execution details](docs/git-ci-cd.md). Azure deployment follows after infrastructure and release prerequisites are configured.
 
 ## Development-agent handoff
 

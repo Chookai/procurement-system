@@ -1,0 +1,28 @@
+{
+  "status": "completed",
+  "conclusion": "success",
+  "headSha": "812a7e1718623ad27cc2b4b17f9571e3a67a9aa0",
+  "url": "https://github.com/Chookai/procurement-system/actions/runs/40529064988",
+  "jobs": [
+    {
+      "name": "Backend with PostgreSQL",
+      "conclusion": "success",
+      "url": "https://github.com/Chookai/procurement-system/actions/runs/40529064988/job/122276545414"
+    },
+    {
+      "name": "Frontend and documentation",
+      "conclusion": "success",
+      "url": "https://github.com/Chookai/procurement-system/actions/runs/40529064988/job/122276545502"
+    }
+  ],
+  "backend_tests": {
+    "passed": 75,
+    "duration_seconds": 91.5
+  },
+  "limitations": [
+    "No hosted browser suite",
+    "No live model or RAG quality evaluation",
+    "Required repository checks not configured by this run",
+    "Azure deployment not configured"
+  ]
+}

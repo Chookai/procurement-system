@@ -6,7 +6,7 @@
 
 Create one honest baseline commit of the existing PR/PO/GR/invoice implementation, tests, design/prototype sources, canonical learnings, local Markdown tickets, sanitized evidence and delivery foundation. Earlier implementation steps are not reconstructed into invented historical commits. Future work uses short feature branches and focused commits.
 
-Local Git is initialized on `main`, using the existing configured author identity. The user supplied the public repository `Chookai/procurement-system`; `origin` is configured. The first code push currently awaits GitHub workflow permission because the authenticated CLI token was rejected for uploading `.github/workflows/ci.yml`. No force push or history replacement is planned. Once connected, open pull requests and configure required checks for `Frontend and documentation` and `Backend with PostgreSQL`; repository rules are configured on GitHub, not established by the workflow file alone.
+Local Git is initialized on `main`, using the existing configured author identity. The user supplied the public repository `Chookai/procurement-system`; `origin` is configured. The workflow permission was granted and the code is pushed. [First hosted CI run](https://github.com/Chookai/procurement-system/actions/runs/40529064988). Open pull requests and configure required checks for `Frontend and documentation` and `Backend with PostgreSQL`; repository rules are configured on GitHub, not established by the workflow file alone.
 
 Exclude `.env` secrets, generated local signing keys, dependencies, environments, caches and compiled/generated mirrors. Keep `.env.example`, lockfiles, source templates, canonical docs/tickets, and explicitly sanitized verification evidence. Reports retained in `runtime-results/` describe historical checks, not a current GitHub run. New CI reports use ignored `ci-*` paths.
 
@@ -14,7 +14,7 @@ Exclude `.env` secrets, generated local signing keys, dependencies, environments
 
 ## Continuous integration now
 
-Workflow: `.github/workflows/ci.yml`. It runs on pull requests, pushes to main and manual dispatch. GitHub must host the repository before any hosted run can occur.
+Workflow: `.github/workflows/ci.yml`. It runs on pull requests, pushes to main and manual dispatch. The workflow is now active on GitHub.
 
 | Job | Checks | Evidence |
 |---|---|---|
@@ -43,7 +43,7 @@ uv sync --project backend --locked --python 3.12.3
 uv run --project backend --locked python -m pytest backend/tests -q --junitxml=runtime-results/ci-backend.xml
 ```
 
-Use Node from `.nvmrc` and start the PostgreSQL service first (`docker compose -f infra/compose.yaml up -d postgres`). The local environment may use the existing `/tmp/procurement-runtime-venv`; the hosted job creates a clean backend environment. No `.env` is copied into CI. Passing local commands does not prove a hosted Actions run; first-run evidence remains pending until the permission grant and first successful push/run.
+Use Node from `.nvmrc` and start the PostgreSQL service first (`docker compose -f infra/compose.yaml up -d postgres`). The local environment may use the existing `/tmp/procurement-runtime-venv`; the hosted job creates a clean backend environment. No `.env` is copied into CI. Passing local commands does not prove a hosted Actions run; hosted evidence is recorded in the [first Actions run](https://github.com/Chookai/procurement-system/actions/runs/40529064988).
 
 ## Continuous deployment after deployment readiness
 
@@ -70,4 +70,8 @@ No deploy workflow, cloud resources, environment approvals, billing resources or
 
 The staged source was exported to a clean temporary directory without `.env`, signing keys or dependencies. A checksum-verified official Linux Node 24.13.0 runtime performed both locked npm installs, TypeScript/build checks, document regeneration/link checks and prototype build successfully. A fresh uv environment with Python 3.12.3 ran all 75 backend tests successfully against PostgreSQL without local model credentials. `actionlint` 1.7.12 (release checksum verified) validated the Actions YAML. The review HTML passed theme, print, mobile and browser-error checks. See `runtime-results/git-ci-local.json`; the local ignored JUnit output is `runtime-results/ci-backend.xml`.
 
-This verifies job-equivalent commands locally. GitHub checkout/cache/artifact execution and repository-required-check settings still need a hosted run. The existing ADS dependency tree emits legacy peer/deprecated-theme warnings; the clean installs and builds passed, and npm reported zero vulnerabilities in this run.
+This verifies job-equivalent commands locally. GitHub checkout/cache/artifact execution is now verified by the hosted run below. Repository-required-check settings remain a separate configuration step. The existing ADS dependency tree emits legacy peer/deprecated-theme warnings; the clean installs and builds passed, and npm reported zero vulnerabilities in this run.
+
+## First hosted verification · 27 October 2026
+
+[GitHub Actions run 40529064988](https://github.com/Chookai/procurement-system/actions/runs/40529064988) passed for commit `812a7e1718623ad27cc2b4b17f9571e3a67a9aa0`. Both jobs succeeded: frontend/documentation checks and 75 backend tests against PostgreSQL (91.50 seconds). Frontend build and backend JUnit artifacts were uploaded successfully. Sanitized evidence: `runtime-results/github-ci-first-run.json`. This run does not establish browser coverage, RAG quality, required branch checks or Azure deployment.
