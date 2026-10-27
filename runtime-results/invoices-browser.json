@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "title": "Invoice review \u00b7 1792997013855",
+  "record_id": "ad2972fc-5513-4c81-b92a-41eb7389aecd",
+  "checks": [
+    "Eva captures invoice before full receipt",
+    "links receipt evidence",
+    "MYR 1200 review leaves four units outstanding",
+    "multiple supplier invoices and all review outcomes",
+    "advisory aggregate quantity warning",
+    "visible invoice actions and filter",
+    "history survives reload",
+    "duplicate invoice rejected without write",
+    "light/dark and 390px no overflow",
+    "Final activity labels identify invoice capture and review"
+  ],
+  "page_errors": []
+}

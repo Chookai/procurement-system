@@ -1,0 +1,28 @@
+{
+  "status": "passed",
+  "records": [
+    {
+      "number": "PR-0014",
+      "invoices": 4
+    },
+    {
+      "number": "PR-0013",
+      "invoices": 1
+    }
+  ],
+  "roles": [
+    "eva",
+    "ben",
+    "chloe",
+    "dinesh"
+  ],
+  "checks": [
+    "Repeated switching retains only selected PR invoices",
+    "PO revisions and receipt history match selected PR",
+    "Main activity count matches selected PR",
+    "Unsaved review state resets between PRs",
+    "No duplicate React key warnings",
+    "Light/dark and 390px layout"
+  ],
+  "page_errors": []
+}

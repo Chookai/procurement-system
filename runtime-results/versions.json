@@ -1,0 +1,15 @@
+{
+  "dependency_lock_sha256": "0f5b325469e6370cb8807d605ed745255acfd3689e80318472d6331c3638b662",
+  "images": [
+    {
+      "tag": "floci/floci-az:0.15.0",
+      "digest": "floci/floci-az@sha256:530635d603223e120adbf9221a97560cffc6991d65fa0c72d0f79d1097974c89",
+      "image_id": "sha256:a10e51710598de3a6c6dd69ab7ed3227f63932f7b5a24b0230d106baa6eb54dd"
+    },
+    {
+      "tag": "pgvector/pgvector:0.8.7-pg17",
+      "digest": "pgvector/pgvector@sha256:ac08538c6f8b9904c33c8224c5e5706dbe760aca29db1d096972b4052c22a75d",
+      "image_id": "sha256:151aa1c2e849e7828ed8aef2183ae15f692cbe887d2f28921d8b44b26e154d7e"
+    }
+  ]
+}

@@ -1,0 +1,282 @@
+{
+  "timestamp": "2026-10-23T02:29:29.275700+00:00",
+  "scope": "live provider contracts; synthetic prompts; not RAG quality",
+  "checks": [
+    {
+      "check": "chat",
+      "status": "passed",
+      "seconds": 1.083,
+      "details": {
+        "text": "COMPATIBLE",
+        "usage": {
+          "reasoning_output_token_count": 0,
+          "input_token_count": 14,
+          "output_token_count": 4,
+          "prompt/cache_write_tokens": 0,
+          "cache_read_input_token_count": 0,
+          "cache_creation_input_token_count": 0,
+          "completion/reasoning_tokens": 0,
+          "total_token_count": 18,
+          "prompt/cached_tokens": 0,
+          "completion/audio_tokens": 0,
+          "prompt/audio_tokens": 0
+        },
+        "response_id": "gen-1792722569-rPoV4F5IYRKXq20PJjbO"
+      }
+    },
+    {
+      "check": "streaming",
+      "status": "passed",
+      "seconds": 0.841,
+      "details": {
+        "text": "Four units remain outstanding.",
+        "text_updates": 5
+      }
+    },
+    {
+      "check": "read_tool",
+      "status": "passed",
+      "seconds": 1.72,
+      "details": {
+        "text": "The outstanding quantity for PO-COMPAT is 4 units.",
+        "tool_calls": [
+          "PO-COMPAT"
+        ],
+        "usage": {
+          "output_token_count": 35,
+          "cache_read_input_token_count": 0,
+          "completion/reasoning_tokens": 0,
+          "total_token_count": 238,
+          "completion/audio_tokens": 0,
+          "reasoning_output_token_count": 0,
+          "input_token_count": 203,
+          "prompt/cache_write_tokens": 0,
+          "cache_creation_input_token_count": 0,
+          "prompt/cached_tokens": 0,
+          "prompt/audio_tokens": 0
+        },
+        "response_id": "gen-1792722572-gBr7Dz6xHCxMnHbMsGUV"
+      }
+    },
+    {
+      "check": "structured_output",
+      "status": "passed",
+      "seconds": 0.887,
+      "details": {
+        "parsed": {
+          "outstanding": 4
+        },
+        "usage": {
+          "reasoning_output_token_count": 0,
+          "input_token_count": 50,
+          "output_token_count": 7,
+          "prompt/cache_write_tokens": 0,
+          "cache_read_input_token_count": 0,
+          "cache_creation_input_token_count": 0,
+          "completion/reasoning_tokens": 0,
+          "total_token_count": 57,
+          "prompt/cached_tokens": 0,
+          "completion/audio_tokens": 0,
+          "prompt/audio_tokens": 0
+        },
+        "response_id": "gen-1792722573-YMtSuDNDrdxCG5UCGhzS"
+      }
+    },
+    {
+      "check": "embeddings",
+      "status": "passed",
+      "seconds": 1.316,
+      "details": {
+        "model": "text-embedding-3-small",
+        "dimensions": 1536,
+        "count": 2,
+        "usage": {
+          "prompt_tokens": 12,
+          "total_tokens": 12,
+          "cost": 2.4e-07,
+          "is_byok": false,
+          "cost_details": {
+            "upstream_inference_cost": 2.4e-07,
+            "upstream_inference_prompt_cost": 2.4e-07,
+            "upstream_inference_completions_cost": 0
+          }
+        },
+        "request_id": null
+      }
+    }
+  ],
+  "base_url": "https://openrouter.ai/api/v1",
+  "chat_model": "openai/gpt-4.1-mini",
+  "embedding_model": "openai/text-embedding-3-small",
+  "routing": {
+    "provider": {
+      "only": [
+        "openai"
+      ],
+      "allow_fallbacks": false,
+      "require_parameters": true
+    }
+  },
+  "http_exchanges": [
+    {
+      "path": "/api/v1/chat/completions",
+      "status": 200,
+      "stream": false,
+      "requested_model": "openai/gpt-4.1-mini",
+      "request_id": null,
+      "id": "gen-1792722569-rPoV4F5IYRKXq20PJjbO",
+      "model": "openai/gpt-4.1-mini",
+      "provider": "OpenAI",
+      "usage": {
+        "prompt_tokens": 14,
+        "completion_tokens": 4,
+        "total_tokens": 18,
+        "cost": 1.2e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 1.2e-05,
+          "upstream_inference_prompt_cost": 5.6e-06,
+          "upstream_inference_completions_cost": 6.4e-06
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "path": "/api/v1/chat/completions",
+      "status": 200,
+      "stream": true,
+      "requested_model": "openai/gpt-4.1-mini",
+      "request_id": null
+    },
+    {
+      "path": "/api/v1/chat/completions",
+      "status": 200,
+      "stream": false,
+      "requested_model": "openai/gpt-4.1-mini",
+      "request_id": null,
+      "id": "gen-1792722571-lOGMcJRLaVWQ70KmB9UJ",
+      "model": "openai/gpt-4.1-mini",
+      "provider": "OpenAI",
+      "usage": {
+        "prompt_tokens": 88,
+        "completion_tokens": 20,
+        "total_tokens": 108,
+        "cost": 6.72e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 6.72e-05,
+          "upstream_inference_prompt_cost": 3.52e-05,
+          "upstream_inference_completions_cost": 3.2e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "path": "/api/v1/chat/completions",
+      "status": 200,
+      "stream": false,
+      "requested_model": "openai/gpt-4.1-mini",
+      "request_id": null,
+      "id": "gen-1792722572-gBr7Dz6xHCxMnHbMsGUV",
+      "model": "openai/gpt-4.1-mini",
+      "provider": "OpenAI",
+      "usage": {
+        "prompt_tokens": 115,
+        "completion_tokens": 15,
+        "total_tokens": 130,
+        "cost": 7e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 7e-05,
+          "upstream_inference_prompt_cost": 4.6e-05,
+          "upstream_inference_completions_cost": 2.4e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "path": "/api/v1/chat/completions",
+      "status": 200,
+      "stream": false,
+      "requested_model": "openai/gpt-4.1-mini",
+      "request_id": null,
+      "id": "gen-1792722573-YMtSuDNDrdxCG5UCGhzS",
+      "model": "openai/gpt-4.1-mini",
+      "provider": "OpenAI",
+      "usage": {
+        "prompt_tokens": 50,
+        "completion_tokens": 7,
+        "total_tokens": 57,
+        "cost": 3.12e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 3.12e-05,
+          "upstream_inference_prompt_cost": 2e-05,
+          "upstream_inference_completions_cost": 1.12e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "path": "/api/v1/embeddings",
+      "status": 200,
+      "stream": false,
+      "requested_model": "openai/text-embedding-3-small",
+      "request_id": null,
+      "id": "gen-emb-1792722574-WGsO8HiUiWOmS1oNREZg",
+      "model": "text-embedding-3-small",
+      "provider": "OpenAI",
+      "usage": {
+        "prompt_tokens": 12,
+        "total_tokens": 12,
+        "cost": 2.4e-07,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 2.4e-07,
+          "upstream_inference_prompt_cost": 2.4e-07,
+          "upstream_inference_completions_cost": 0
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "goods_title": "Receiving goods · 1792990457500",
+  "goods_id": "0eb12f64-3b3f-40e7-9922-516443b5d558",
+  "service_title": "Receiving service · 1792990461589",
+  "checks": [
+    "Dinesh receives during pending revision",
+    "accepted 6 damaged 2 rejected 1 leaves 4",
+    "change approval and fulfilment visible separately",
+    "combined quantity overflow rejected without write",
+    "issued increase to 12 leaves 6",
+    "second receipt linked to revision 2",
+    "reload and history persist",
+    "complete fulfilment filter",
+    "no receive action on complete order",
+    "service milestone acceptance leaves 2",
+    "light/dark and mobile no overflow"
+  ],
+  "page_errors": []
+}

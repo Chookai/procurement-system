@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "title": "PO revisions · browser 1792893713148",
+  "checks": [
+    "create and approve PR",
+    "issue original MYR 1900 PO",
+    "propose quantity and price increase",
+    "current snapshot unchanged while pending and approved",
+    "return reason and replacement proposal",
+    "Ben approves exact proposal",
+    "Chloe issues revision 2 MYR 2640",
+    "reload persists",
+    "original revision expandable",
+    "light/dark",
+    "390px no overflow"
+  ],
+  "page_errors": []
+}

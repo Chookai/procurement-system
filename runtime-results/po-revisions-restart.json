@@ -1,0 +1,5 @@
+{
+  "status": "passed",
+  "check": "Unchanged authenticated PR, proposals, issued history and current revision across actual API process restart",
+  "revision": 2
+}

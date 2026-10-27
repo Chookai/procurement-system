@@ -1,0 +1,19 @@
+{
+  "status": "passed",
+  "record_title": "Pump seals \u00b7 browser 1792744458921",
+  "checks": [
+    "login",
+    "save MYR 2000 draft",
+    "reload persists record/session",
+    "submit",
+    "return with reason",
+    "edit and resubmit",
+    "Ben approves",
+    "audit visible",
+    "light/dark",
+    "390px no page overflow",
+    "buyer read-only"
+  ],
+  "page_errors": [],
+  "source": "Successful Chrome/Playwright walkthrough; screenshots stored under mockups/application-pr-*.png"
+}

@@ -1,0 +1,54 @@
+{
+  "timestamp": "2026-10-23T02:29:28.580883+00:00",
+  "scope": "local compatibility; not RAG quality",
+  "mode": "exercise",
+  "python": "3.12.3",
+  "packages": {
+    "agent-framework-openai": "1.17.0",
+    "agent-framework-core": "1.23.0",
+    "openai": "3.37.0",
+    "azure-storage-blob": "12.31.0",
+    "fastapi": "0.161.1",
+    "psycopg": "3.3.6",
+    "uvicorn": "0.54.0"
+  },
+  "checks": [
+    {
+      "check": "postgres",
+      "status": "passed",
+      "seconds": 0.029,
+      "details": {
+        "server": "17.11 (Debian 17.11-1.pgdg12+2)",
+        "vector": "0.8.7",
+        "mode": "exercise"
+      }
+    },
+    {
+      "check": "blob",
+      "status": "passed",
+      "seconds": 0.053,
+      "details": {
+        "mode": "exercise",
+        "container": "runtime-compatibility",
+        "sdk_operations": "upload, metadata, download, range, list, overwrite, delete"
+      }
+    },
+    {
+      "check": "job_lock",
+      "status": "passed",
+      "seconds": 0.033,
+      "details": {
+        "skip_locked": true,
+        "scope": "database locking primitive; not a worker implementation"
+      }
+    },
+    {
+      "check": "fastapi",
+      "status": "passed",
+      "seconds": 0.027,
+      "details": {
+        "scope": "FastAPI/TestClient dependency compatibility only; no procurement API yet"
+      }
+    }
+  ]
+}

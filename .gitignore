@@ -1,0 +1,29 @@
+node_modules/
+dist-prototype/
+.env
+.env.*
+!.env.example
+.venv/
+__pycache__/
+.pytest_cache/
+backend/.local/
+frontend/dist/
+
+# Local tooling, credentials and temporary runtime output
+.ruff_cache/
+.coverage
+htmlcov/
+.DS_Store
+Thumbs.db
+*.log
+*.pem
+*.p12
+*.pfx
+*.key
+playwright-report/
+test-results/
+runtime-results/ci-*
+
+# Rebuilt from canonical docs/tickets by tools/build-*.py
+mockups/procurement-ui-prototype/public/learnings/
+mockups/procurement-ui-prototype/public/tickets.html

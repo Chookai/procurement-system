@@ -1,0 +1,8 @@
+{
+  "timestamp": "2026-10-23T14:05:25.136933+00:00",
+  "status": "passed",
+  "scope": "actual Uvicorn stop/start; same signed session and identical issued PO snapshot",
+  "number": "PO-0001",
+  "id": "10cc02ba-e1eb-4c1b-a857-4ad382b9d60b",
+  "total": "1900.00"
+}

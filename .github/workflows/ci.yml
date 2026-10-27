@@ -1,0 +1,98 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  frontend-and-docs:
+    name: Frontend and documentation
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: |
+            frontend/package-lock.json
+            mockups/procurement-ui-prototype/package-lock.json
+      - name: Check tracked file hygiene
+        run: python3 tools/check-repository.py
+      - name: Install locked frontend dependencies
+        run: npm ci --prefix frontend
+      - name: Check frontend types
+        run: npm run app:check
+      - name: Build application frontend
+        run: npm run app:build
+      - name: Install locked prototype dependencies
+        run: npm ci --prefix mockups/procurement-ui-prototype
+      - name: Rebuild ticket and learning pages
+        run: |
+          python3 tools/build-ticket-register.py
+          python3 tools/build-learnings.py
+          python3 tools/check-documentation.py
+      - name: Build prototype and teaching site
+        run: npm run prototype:build
+      - name: Save application build
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: frontend-build
+          path: frontend/dist/
+          if-no-files-found: error
+          retention-days: 14
+
+  backend:
+    name: Backend with PostgreSQL
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: pgvector/pgvector:0.8.7-pg17@sha256:ac08538c6f8b9904c33c8224c5e5706dbe760aca29db1d096972b4052c22a75d
+        env:
+          POSTGRES_USER: procurement
+          POSTGRES_PASSWORD: procurement-local-only
+          POSTGRES_DB: procurement
+        ports:
+          - 15432:5432
+        options: >-
+          --health-cmd "pg_isready -U procurement -d procurement"
+          --health-interval 2s
+          --health-timeout 3s
+          --health-retries 20
+    env:
+      DATABASE_URL: postgresql://procurement:procurement-local-only@127.0.0.1:15432/procurement
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@94527f2e458b27549849d47d273a16bec83a01e9 # v7
+        with:
+          version: "0.11.15"
+          python-version: "3.12.3"
+          enable-cache: true
+          cache-dependency-glob: backend/uv.lock
+      - name: Install locked backend dependencies
+        run: uv sync --project backend --locked --python 3.12.3
+      - name: Run backend tests without model credentials
+        run: uv run --project backend --locked python -m pytest backend/tests -q --junitxml=runtime-results/ci-backend.xml
+      - name: Save test report
+        if: always()
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: backend-test-report
+          path: runtime-results/ci-backend.xml
+          if-no-files-found: warn
+          retention-days: 14

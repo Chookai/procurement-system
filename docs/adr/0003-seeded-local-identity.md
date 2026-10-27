@@ -1,0 +1,3 @@
+# Use seeded users for the local milestone
+
+On 23 October 2026 the user accepted five seeded local users with server-verified signed tokens and backend role checks, with no registration in this phase. The users represent the requester, approver, procurement buyer, receiver/service acceptor and invoice reviewer. This keeps the learning milestone small while exercising the same authorization boundary for browser commands and agent tools. The prototype's role selector is a design aid; it must not become a client-controlled authorization mechanism. Production identity remains a later integration and is not established by this local setup.

@@ -1,0 +1,199 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Marine procurement \u00b7 one team \u00b7 MYR",
+    "locale": "en",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "people",
+      "label": "Human workflow"
+    },
+    {
+      "id": "agent",
+      "label": "Agent evidence path"
+    }
+  ],
+  "mainPath": [
+    "request",
+    "approve",
+    "order",
+    "receive",
+    "invoice",
+    "complete"
+  ],
+  "nodes": [
+    {
+      "id": "request",
+      "lane": "people",
+      "col": 0,
+      "type": "frontend",
+      "label": "Draft PR",
+      "sublabel": "Aina \u00b7 requester",
+      "tag": "Form / upload / chat"
+    },
+    {
+      "id": "approve",
+      "lane": "people",
+      "col": 1,
+      "type": "security",
+      "label": "Approve PR",
+      "sublabel": "Ben \u00b7 approver",
+      "tag": "No self-approval"
+    },
+    {
+      "id": "order",
+      "lane": "people",
+      "col": 2,
+      "type": "backend",
+      "label": "Issue PO",
+      "sublabel": "Chloe \u00b7 buyer",
+      "tag": "Supplier + price"
+    },
+    {
+      "id": "receive",
+      "lane": "people",
+      "col": 3,
+      "type": "frontend",
+      "label": "Accept delivery",
+      "sublabel": "Dinesh \u00b7 receiver",
+      "tag": "Goods / service",
+      "width": 160
+    },
+    {
+      "id": "invoice",
+      "lane": "people",
+      "col": 4,
+      "type": "frontend",
+      "label": "Review invoice",
+      "sublabel": "Eva \u00b7 reviewer",
+      "tag": "Link PO + receipts"
+    },
+    {
+      "id": "complete",
+      "lane": "people",
+      "col": 5,
+      "type": "database",
+      "label": "Reviewed",
+      "sublabel": "Phase endpoint",
+      "tag": "Payment is deferred"
+    },
+    {
+      "id": "documents",
+      "lane": "agent",
+      "col": 0,
+      "type": "database",
+      "label": "Source documents",
+      "sublabel": "Policies + purchase files",
+      "tag": "Version + access scope",
+      "width": 160
+    },
+    {
+      "id": "retrieve",
+      "lane": "agent",
+      "col": 1,
+      "type": "backend",
+      "label": "Retrieve evidence",
+      "sublabel": "Filter before retrieval",
+      "tag": "Relevant passages",
+      "width": 160
+    },
+    {
+      "id": "assist",
+      "lane": "agent",
+      "col": 2,
+      "type": "backend",
+      "label": "Cited assistance",
+      "sublabel": "Explain / draft / flag",
+      "tag": "Human authorizes action",
+      "width": 160
+    },
+    {
+      "id": "evaluate",
+      "lane": "agent",
+      "col": 3,
+      "type": "security",
+      "label": "Evaluate RAG",
+      "sublabel": "Retrieval + answer + tools",
+      "tag": "Versioned test cases",
+      "width": 160
+    }
+  ],
+  "edges": [
+    {
+      "from": "request",
+      "to": "approve",
+      "label": "Submit"
+    },
+    {
+      "from": "approve",
+      "to": "order",
+      "label": "Approved"
+    },
+    {
+      "from": "order",
+      "to": "receive",
+      "label": "Delivery"
+    },
+    {
+      "from": "receive",
+      "to": "invoice",
+      "label": "Link evidence"
+    },
+    {
+      "from": "invoice",
+      "to": "complete",
+      "label": "Human review"
+    },
+    {
+      "from": "documents",
+      "to": "retrieve",
+      "label": "Index"
+    },
+    {
+      "from": "retrieve",
+      "to": "assist",
+      "label": "Citations"
+    },
+    {
+      "from": "assist",
+      "to": "evaluate",
+      "label": "Trace",
+      "variant": "dashed"
+    },
+    {
+      "from": "assist",
+      "to": "order",
+      "label": "Propose only",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Small-team demo",
+      "items": [
+        "One named PIC per step; all identities and records are fictional.",
+        "MYR throughout. Amount-based routing is configurable; threshold is pending."
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Exceptions remain visible",
+      "items": [
+        "Partial receipts, damaged goods, service milestones and multiple invoices.",
+        "Changes require version history; scope or value increases need reapproval."
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "RAG production goal",
+      "items": [
+        "Workflow status comes from structured records; documents provide cited evidence.",
+        "Mockup only: no model, retrieval engine or production integration is running."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "harbor-procurement-web",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5175 --strictPort",
+    "build": "vite build",
+    "check": "tsc --project tsconfig.json"
+  },
+  "dependencies": {
+    "@atlaskit/button": "latest",
+    "@atlaskit/tokens": "latest",
+    "@atlaskit/css-reset": "latest",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "vite": "latest",
+    "typescript": "latest",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0"
+  }
+}

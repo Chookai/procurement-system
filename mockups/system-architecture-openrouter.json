@@ -1,0 +1,244 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Procurement system \u00b7 local to Azure",
+    "locale": "en",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1310,
+      660
+    ]
+  },
+  "components": [
+    {
+      "id": "frontend",
+      "type": "frontend",
+      "label": "React workspace",
+      "sublabel": "TypeScript \u00b7 five PIC roles",
+      "pos": [
+        40,
+        210
+      ],
+      "size": [
+        230,
+        80
+      ]
+    },
+    {
+      "id": "api",
+      "type": "backend",
+      "label": "FastAPI backend",
+      "sublabel": "Rules \u00b7 access \u00b7 audit",
+      "pos": [
+        370,
+        210
+      ],
+      "size": [
+        230,
+        80
+      ]
+    },
+    {
+      "id": "database",
+      "type": "database",
+      "label": "PostgreSQL",
+      "sublabel": "Records + full-text + vectors",
+      "pos": [
+        700,
+        210
+      ],
+      "size": [
+        230,
+        80
+      ]
+    },
+    {
+      "id": "cache",
+      "type": "database",
+      "label": "Redis cache \u00b7 later",
+      "sublabel": "Scoped cache \u00b7 never authority",
+      "pos": [
+        370,
+        50
+      ],
+      "size": [
+        230,
+        80
+      ]
+    },
+    {
+      "id": "blobs",
+      "type": "cloud",
+      "label": "Document storage",
+      "sublabel": "Floci Blob \u2192 Azure Blob",
+      "pos": [
+        1030,
+        50
+      ],
+      "size": [
+        230,
+        80
+      ]
+    },
+    {
+      "id": "queue",
+      "type": "messagebus",
+      "label": "Ingestion queue",
+      "sublabel": "DB jobs first \u00b7 Azure Queue later",
+      "pos": [
+        700,
+        370
+      ],
+      "size": [
+        230,
+        80
+      ]
+    },
+    {
+      "id": "worker",
+      "type": "backend",
+      "label": "Ingestion worker",
+      "sublabel": "Parse \u00b7 chunk \u00b7 embed \u00b7 index",
+      "pos": [
+        1030,
+        370
+      ],
+      "size": [
+        230,
+        80
+      ]
+    },
+    {
+      "id": "agent",
+      "type": "backend",
+      "label": "Agent Framework",
+      "sublabel": "In-process agent + retrieval tools",
+      "pos": [
+        370,
+        530
+      ],
+      "size": [
+        230,
+        80
+      ]
+    },
+    {
+      "id": "evals",
+      "type": "backend",
+      "label": "Evaluation runner",
+      "sublabel": "Retrieval / answers / tools",
+      "pos": [
+        40,
+        530
+      ],
+      "size": [
+        230,
+        80
+      ]
+    },
+    {
+      "id": "openrouter",
+      "type": "external",
+      "label": "OpenRouter",
+      "sublabel": "First-milestone model route",
+      "pos": [
+        700,
+        530
+      ],
+      "size": [
+        230,
+        80
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "frontend",
+      "to": "api",
+      "label": "HTTPS / SSE"
+    },
+    {
+      "from": "api",
+      "to": "database",
+      "label": "SQL"
+    },
+    {
+      "from": "api",
+      "to": "cache",
+      "label": "Optional cache",
+      "variant": "dashed"
+    },
+    {
+      "from": "api",
+      "to": "blobs",
+      "label": "Upload / read"
+    },
+    {
+      "from": "api",
+      "to": "queue",
+      "label": "Create job"
+    },
+    {
+      "from": "queue",
+      "to": "worker",
+      "label": "Claim / retry",
+      "labelDy": 45
+    },
+    {
+      "from": "worker",
+      "to": "blobs",
+      "label": "Read source"
+    },
+    {
+      "from": "worker",
+      "to": "database",
+      "label": "Write index"
+    },
+    {
+      "from": "api",
+      "to": "agent",
+      "label": "Invoke agent",
+      "labelAt": [
+        485,
+        490
+      ]
+    },
+    {
+      "from": "agent",
+      "to": "evals",
+      "label": "Capture / score"
+    },
+    {
+      "from": "agent",
+      "to": "openrouter",
+      "label": "Provider adapter"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Start small",
+      "items": [
+        "One backend codebase; Agent Framework is an internal module.",
+        "One ingestion runner. PostgreSQL owns workflow and retrieval data."
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Queue and cache",
+      "items": [
+        "DB-backed jobs first; external queue only when needed.",
+        "Redis is optional later. Freshness and authorization always win."
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "Hosted AI and evaluation",
+      "items": [
+        "OpenRouter first. Foundry is deferred beyond this phase.",
+        "Local regression checks cover retrieval, answers and tools."
+      ]
+    }
+  ]
+}

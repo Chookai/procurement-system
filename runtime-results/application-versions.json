@@ -1,0 +1,12 @@
+{
+  "dependency_lock_sha256": "c669220fb6ab191654224748996e16c2963d69b4532d4c553b7bd5195fe895e0",
+  "frontend_lock_sha256": "22fe108195cb1029e6ba1458828a3bfd48f6d7eccaf32f7dca1fd3fc57537f65",
+  "migrations": [
+    "001_requisitions.sql",
+    "002_purchase_orders.sql",
+    "003_po_reapprovals.sql",
+    "004_receipts.sql",
+    "005_invoices.sql"
+  ],
+  "scope": "PR/approval, PO issuance/reapproval, receipts/service acceptance and supplier invoice capture/review"
+}

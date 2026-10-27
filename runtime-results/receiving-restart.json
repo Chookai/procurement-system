@@ -1,0 +1,9 @@
+{
+  "status": "passed",
+  "checks": [
+    "Authenticated session survives API process restart",
+    "Receipt history and issued revision snapshots unchanged",
+    "Fulfilment totals unchanged"
+  ],
+  "receipts": 2
+}

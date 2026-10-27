@@ -1,0 +1,37 @@
+{
+  "timestamp": "2026-10-23T02:26:36.155497+00:00",
+  "scope": "local compatibility; not RAG quality",
+  "mode": "verify",
+  "python": "3.12.3",
+  "packages": {
+    "agent-framework-openai": "1.17.0",
+    "agent-framework-core": "1.23.0",
+    "openai": "3.37.0",
+    "azure-storage-blob": "12.31.0",
+    "fastapi": "0.161.1",
+    "psycopg": "3.3.6",
+    "uvicorn": "0.54.0"
+  },
+  "checks": [
+    {
+      "check": "postgres",
+      "status": "passed",
+      "seconds": 0.021,
+      "details": {
+        "server": "17.11 (Debian 17.11-1.pgdg12+2)",
+        "vector": "0.8.7",
+        "mode": "verify"
+      }
+    },
+    {
+      "check": "blob",
+      "status": "passed",
+      "seconds": 0.023,
+      "details": {
+        "mode": "verify",
+        "container": "runtime-compatibility",
+        "sdk_operations": "restart fixture"
+      }
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "name": "procurement-design-workspace",
+  "private": true,
+  "scripts": {
+    "prototype": "npm --prefix mockups/procurement-ui-prototype run prototype",
+    "prototype:build": "npm --prefix mockups/procurement-ui-prototype run build",
+    "app": "npm --prefix frontend run dev",
+    "app:build": "npm --prefix frontend run build",
+    "app:check": "npm --prefix frontend run check"
+  }
+}

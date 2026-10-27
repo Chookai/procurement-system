@@ -1,0 +1,31 @@
+name: procurement-local
+services:
+  postgres:
+    image: pgvector/pgvector:0.8.7-pg17@sha256:ac08538c6f8b9904c33c8224c5e5706dbe760aca29db1d096972b4052c22a75d
+    environment:
+      POSTGRES_USER: procurement
+      POSTGRES_PASSWORD: procurement-local-only
+      POSTGRES_DB: procurement
+    ports:
+      - "127.0.0.1:15432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U procurement -d procurement"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+  blob:
+    image: floci/floci-az:0.15.0@sha256:530635d603223e120adbf9221a97560cffc6991d65fa0c72d0f79d1097974c89
+    ports:
+      - "127.0.0.1:14577:4577"
+    environment:
+      FLOCI_AZ_STORAGE_MODE: persistent
+      FLOCI_AZ_STORAGE_PATH: /app/data
+      FLOCI_AZ_BASE_URL: http://localhost:14577
+    volumes:
+      - blob-data:/app/data
+    stop_grace_period: 30s
+volumes:
+  postgres-data:
+  blob-data:

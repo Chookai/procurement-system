@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "title": "Approval visibility · 1792985833703",
+  "checks": [
+    "Ben filters Awaiting PO approval",
+    "pending PO row shows next action and owner",
+    "detail badge matches workflow",
+    "review opens actionable approval controls",
+    "PR approval remains approved in backend",
+    "light/dark",
+    "390px no overflow"
+  ],
+  "page_errors": []
+}

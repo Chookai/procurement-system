@@ -1,0 +1,9 @@
+{
+  "timestamp": "2026-10-23T08:38:30.554958+00:00",
+  "status": "passed",
+  "scope": "actual Uvicorn process stopped and restarted; same persisted cookie and full PR/audit response",
+  "record_id": "22115a83-fcba-4778-9ab2-81b82221d5ff",
+  "record_number": "PR-0004",
+  "version": 6,
+  "events": 6
+}

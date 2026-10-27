@@ -1,0 +1,20 @@
+[project]
+name = "procurement-backend"
+version = "0.1.0"
+description = "Procurement application runtime and compatibility checks"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "agent-framework-openai==1.17.0",
+    "azure-storage-blob==12.31.0",
+    "fastapi==0.161.1",
+    "psycopg[binary]==3.3.6",
+    "uvicorn==0.54.0",
+    "openai==3.37.0",
+    "pydantic==2.14.1",
+    "python-dotenv==1.2.4",
+    "httpx2==2.16.0",
+    "pyjwt>=2.10,<3",
+]
+
+[dependency-groups]
+dev = ["pytest>=8,<10", "pytest-asyncio>=1,<2"]
