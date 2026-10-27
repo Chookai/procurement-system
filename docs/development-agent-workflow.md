@@ -1,79 +1,87 @@
-# Development agents: plan → implement → verify
+# Development workflow: plan here → implement in Kilo → verify here
 
-User direction recorded 23 October 2026: GPT Sol handles architecture, implementation planning, specifications and tickets; a separate pi harness with a cheaper OpenRouter model implements and performs initial testing; GPT Sol then performs an independent testing/review pass through the Codex subscription. This changes the development workflow, not the procurement agent's runtime architecture. No application implementation is authorized by this research note.
+Accepted user direction, 27 October 2026. Planning, architecture decisions, specifications and local Markdown tickets stay in this conversation with the orchestrator. The user takes one ready ticket to Kilo Desktop with a cheaper model for implementation and initial testing. Verification returns here; the orchestrator owns the verification result and presents the evidence for the user's decision.
 
-## Current execution choice
+The existing application was built here before this handoff choice. No Kilo implementation or cross-harness integration has been tested yet. The interactive record is `learnings/reference/agent-workflow-report.html`.
 
-Later on 23 October 2026, the user authorized implementation here and deferred configuring pi or Claude Code with OpenRouter. The original handoff design below remains an optional future workflow, not a restriction on the newly authorized implementation. The first PR application slice is documented in `first-application-slice.md`.
+## Responsibilities
 
-## Responsibilities and billing
+| Stage | Owner | Required output |
+|---|---|---|
+| Plan and specify | User + orchestrator here | One approved, bounded ticket; acceptance and negative cases; constraints; required checks |
+| Implement | Kilo Desktop + user-selected cheaper model | Focused branch/change, implementation tests, initial results and candidate commit |
+| Verify | Orchestrator here; fresh-context review when needed | Independently executed checks, additional scenarios, acceptance comparison, reproducible findings and limits |
+| Repair | Kilo Desktop | Fixes tied to findings, regression evidence and a new candidate commit |
+| Decide | User | Inspect sensitive behavior and evidence; decide whether to accept/merge |
 
-| Stage | Harness and model | Result | Billing route |
-|---|---|---|---|
-| Plan | Codex app or CLI, selected GPT Sol model | Small executable ticket, contracts, acceptance scenarios, test commands and exclusions | ChatGPT/Codex subscription sign-in, subject to its limits |
-| Implement | pi, explicitly selected OpenRouter coding model | Focused code change and initial test evidence | OpenRouter API credits |
-| Independently verify | Fresh Codex session, GPT Sol | Actual test execution, additional edge cases, spec comparison and findings | ChatGPT/Codex subscription sign-in, subject to its limits |
-| Repair and verify again | pi repairs; Codex independently verifies | Fix evidence and resolution of each finding | Each harness keeps its own billing route |
+Fresh-context review may use a separate reviewer subagent here supplied with the spec and fixed code snapshot, rather than the implementation conversation. It is a review mechanism, not an additional implementation owner. Re-running the same tests in this long-running planning conversation alone is not an independent adversarial review.
 
-The production application and its live RAG evaluation calls still use separately billed provider APIs. A subscription-backed reviewer can inspect outputs and run the evaluation command, but it does not pay for the application's OpenRouter generation, embeddings or model-judge calls. Manual GPT review is not a versioned automated RAG quality score.
+Kilo's exact model, provider, authentication and filesystem/command permissions still need configuration in Kilo. This document records the user's process; it does not assert any particular Kilo integration has been installed or validated. Prior pi/Claude Code research is preserved in `development-agent-workflow-2026-10-23.md` as history, not an active instruction to use those harnesses.
 
-## Checked locally
+## Manual handoff first
 
-- Installed Codex CLI: `0.163.0-alpha.11.2`.
-- `codex login status` reports `Logged in using ChatGPT`.
-- `pi` was not found on the checked WSL PATH; that does not establish whether it is installed elsewhere on Windows.
-- This check did not launch pi, start implementation, install a harness, change authentication or run a second GPT model session.
+1. Prepare one implementation-ready local ticket here. Include scope, non-goals, acceptance examples, protected rules and relevant checks. Readiness is distinct from execution progress.
+2. Start Kilo from the intended checkout/feature branch. Explicitly provide `AGENTS.md`, the ticket/spec and relevant glossary/ADRs. Do not assume another harness automatically loads these instructions.
+3. Kilo implements and tests. It must not relax approved acceptance criteria, disable checks, edit credentials into source or silently expand scope. Changes to tests/CI/review rules must be called out for independent inspection.
+4. Freeze the handoff with a candidate commit. Record the base and candidate SHAs, branch, ticket path, changed files, exact commands/exits, artifacts and incomplete checks. Stop Kilo editing while that snapshot is verified.
+5. Return here with the ticket path, candidate SHA and evidence locations. Local commits are sufficient if both tools use this repository; separate clones need an explicit commit transfer/remote. A branch name or summary alone is insufficient.
+6. Verify the fixed candidate in an isolated checkout when needed. Run required checks; add independent negative/adversarial cases. Read application code without repairing it during the verification pass. Supplemental tests and reports belong in the verifier's workspace/output area.
+7. Send confirmed findings back to Kilo. Prefer a small reproduction and a test that fails on the defective version. Static concerns that cannot be executed remain clearly labelled, with a concrete code path and limits.
+8. A repair creates a new SHA. Re-run affected checks and any required regression suite. After three repair/review rounds, reassess the design or ticket instead of expanding unrelated cleanup indefinitely.
+9. Present the evidence to the user for acceptance. Keep human inspection for authorization, money/quantity rules, evidence immutability, migrations, CI and future agent action permissions. No automatic merge/deployment is configured.
 
-## Start with a manual handoff
+## Verification evidence
 
-1. Have Codex refine one ticket. Keep the approved requirements and negative cases explicit. Existing backlog tickets are not all detailed enough for blind implementation.
-2. Give pi the approved spec, selected ticket, applicable agent instructions and domain/architecture documents. Limit work to that ticket. Require a summary of changed files, exact test commands/results, limitations and unresolved questions. Tests or acceptance gates must not be weakened to make the change pass.
-3. Stop pi editing before review. Use a fixed Git commit or otherwise a stable file snapshot; establishing Git is recommended before the first implementation handoff. Git was not initialized by this research step.
-4. Start a fresh Codex session on that same snapshot. Have it run tests, compare behavior against the ticket, add independent negative scenarios and report reproducible findings. Ask it to report first, without implementing repairs.
-5. Send findings to pi for fixes. Verify again in Codex. Only then mark implementation complete; end-of-phase user code inspection is still required.
+Each result must identify its ticket, base/candidate commit, environment/lockfiles, commands with actual exit codes, results/artifacts, additional scenarios, findings, skipped or unavailable checks, and remaining limitations. Capture outputs from commands; do not treat either harness's narrative as execution evidence.
 
-## Authentication and commands
+Use `passed`, `failed` and `not_run` for individual checks. A missing database/browser, a missing artifact or an unavailable provider is not a pass. Only explicitly required checks count toward the candidate verdict; irrelevant checks can be excluded with a reason in the approved ticket. Fresh context and a different model improve scrutiny but do not guarantee correctness.
 
-For Codex, keep ChatGPT sign-in rather than switching to an OpenAI API key:
+Keep the approved spec/review rules anchored to the trusted base. The candidate must not redefine its own acceptance oracle. A verifier reports findings and evidence; it cannot replace the user's required acceptance or authorize procurement actions in the application.
 
-```bash
-codex login status
-# If not signed in: codex login, then complete the browser sign-in.
-codex -m gpt-6.1-sol
-```
-
-The official model guide lists `gpt-6.1-sol`; use the specific Sol version available to the account and client. The status check verifies sign-in, not every model's entitlement. In the desktop app, select the intended Sol model in the picker.
-
-For pi, assuming the Pi project formerly named badlogic/pi-mono, now earendil-works/pi, start it in the project directory and authenticate interactively:
+### Implementer handoff template
 
 ```text
-pi
-/login openrouter
-/model
+Ticket/spec path:
+Approved scope and non-goals:
+Base commit SHA:
+Feature branch / checkout:
+Acceptance examples and negative cases:
+Required checks:
+Protected rules / sensitive paths:
+
+Return after implementation:
+Candidate commit SHA:
+Changed files:
+Commands, exit codes and artifact paths:
+Checks not run / unresolved questions:
+Risks and how to undo the change:
 ```
 
-Select the OpenRouter model deliberately. Pi also accepts `OPENROUTER_API_KEY` from its process environment, but the backend's `.env` is not automatically the harness configuration. Prefer pi's login flow or a separately configured harness key with its own spend limit. No particular cheaper coding model has been benchmarked/selected yet.
+### Return-to-verifier template
 
-Current upstream pi also exposes OpenAI ChatGPT subscription authentication in its OpenAI provider source; the old `openai-codex` provider is labelled legacy. If using that alternative, verify the installed version's `/login` and model list. It is not required for this user's proposed split, which keeps GPT planning and verification in Codex.
+```text
+Verify ticket <path> against base <SHA> and candidate <SHA>.
+Implementation is frozen. Read trusted instructions/spec from the base.
+Run the required checks and devise independent negative cases.
+Do not repair application code or weaken tests during this pass.
+For each finding: severity, file/line, expected/actual behavior,
+reproduction or concrete code path, and evidence.
+Return check results, artifacts, limits and whether required evidence
+supports acceptance. New commits require appropriate rechecks.
+```
 
-## Reviewer prompt
+## Maintained HTML records
 
-> Verify the specified ticket against the approved specification and completion gates. Execute the available tests; report exact commands and outcomes, including skips and missing dependencies. Inspect the implementation for authorization, state-transition, monetary/quantity, concurrency and persistence failures relevant to this ticket. Add independent edge cases rather than relying only on the implementer's tests. Do not modify application code or relax acceptance criteria. For each finding provide severity, file/line, reproduction and expected versus actual behavior. State what was not tested. Write repair recommendations for the pi implementer. Do not mark the milestone complete.
+Keep `learnings/reference/agent-workflow-report.html` as the workflow/index report. For each actual Kilo candidate, write a separate verification report under `learnings/reports/<ticket>-<short-sha>.html` and link it from the report log. Include the tested snapshot, requirements, actual execution evidence, findings and limitations. A later candidate gets a new entry rather than overwriting the earlier verdict. No Kilo candidate has been submitted yet, and no automatic report generator or verifier dispatcher is installed; reports can be authored here as part of each verification.
 
-The reviewer may need to create independent tests and reports; that requires workspace writes even though application repairs are excluded. Prefer the interactive Codex app/CLI initially. Its permissions must support the actual local commands and dependencies; this WSL environment reported missing bubblewrap under the default shell sandbox, so sandbox configuration needs attention before unattended CLI testing is assumed to work.
+## Current automation boundaries
 
-## Later automation
+- Local Git baseline: `a592399`; existing application plus prepared GitHub Actions.
+- Local job-equivalent verification passed: 75 backend tests, Linux frontend/prototype builds and documentation checks. These are historical checks, not a result for a future Kilo change.
+- Hosted CI awaits a GitHub repository connection and first run.
+- Existing browser scripts are local tools; portable fixture-based CI browser coverage is still proposed.
+- `REVIEW.md`, a trusted verification runner and the portable browser CI job are proposed additions, not installed by this document update.
+- No Kilo connector, automatic task dispatch, fresh review session, automatic repairs, merge or Azure deployment was launched.
+- Production RAG retrieval/answer/citation/action evaluations remain separate from code verification and are not yet implemented.
 
-After manual handoffs work, pi can call `codex exec` as a separate reviewer process, or integrate Codex app-server for sessions/events/approvals. The CLI command supports explicit model selection, JSON output and an output file. Continue using the authenticated local Codex workflow, and verify the authentication/usage route; do not assume an OpenAI/OpenRouter API call consumes subscription allowance. No automation or harness extension was installed here.
-
-## Sources
-
-- [Official OpenAI authentication documentation](https://learn.chatgpt.com/docs/auth): ChatGPT subscription sign-in versus separately billed API-key access.
-- [Official Codex model guide](https://learn.chatgpt.com/docs/models?surface=app): Sol model IDs and availability qualifications.
-- [Official Codex CLI reference](https://learn.chatgpt.com/docs/cli/reference): `exec`, model selection and output controls.
-- [Official Codex app-server guide](https://learn.chatgpt.com/docs/app-server): integration surface for a future orchestrator.
-- [pi provider documentation](https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/providers.md): OpenRouter authentication and model discovery.
-- [pi OpenAI provider source](https://github.com/earendil-works/pi/blob/main/packages/ai/src/providers/openai.ts): current ChatGPT subscription login option.
-- [pi legacy Codex provider source](https://github.com/earendil-works/pi/blob/main/packages/ai/src/providers/openai-codex.ts): version-sensitive legacy naming.
-
-Sources checked 23 October 2026. Source capabilities are not a claim that pi was installed or tested on this machine.
+This direction concerns development agents. The procurement application's OpenRouter/Agent Framework baseline and deferred Foundry decision remain unchanged.

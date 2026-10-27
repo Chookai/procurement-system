@@ -20,3 +20,5 @@
 - 26 October 2026: added invoice capture/review and lesson 0006 on review versus payment, independent fulfilment, frozen review evidence and idempotency versus document uniqueness. The structured PR/PO/GR/invoice flow now exists; real ingestion/agent retrieval/evals remain pending. No mastery inferred from implementation or test results.
 
 - 27 October 2026: user authorized local Git baseline and selected GitHub Actions. Added an HTML Git/CI/CD review plan. Local job-equivalent checks passed from a clean export without .env; hosted CI needs a repository URL and CD needs Azure setup. No learner mastery inferred.
+
+- 27 October 2026: user chose this conversation as orchestrator for planning/specs/tickets, Kilo Desktop with a cheaper model for implementation, and verification back here. Keep a maintained HTML workflow report. Prior pi/Claude harness research is historical; exact Kilo configuration and automatic dispatch remain unvalidated.
