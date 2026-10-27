@@ -20,12 +20,13 @@ Workflow: `.github/workflows/ci.yml`. It runs on pull requests, pushes to main a
 |---|---|---|
 | Frontend and documentation | Locked npm installs; React TypeScript check; production app build; regenerate ticket/learnings; validate local teaching links; prototype/teaching-site build; tracked-file hygiene | Frontend build artifact, retained 14 days |
 | Backend with PostgreSQL | Python 3.12.3 + uv 0.11.15; locked dependencies; isolated PostgreSQL integration tests and mocked provider failure contracts | JUnit test report, retained 14 days even if tests fail |
+| Browser smoke with PostgreSQL | Playwright's bundled Chromium; locked npm/uv installs; one core PR create → submit → approve journey with a self-approval check against a disposable `smoke_procurement` database | Playwright HTML report plus screenshots/traces on failure, retained 14 days when the suite fails |
 
 Node is pinned to the locally validated 24.13.0 in `.nvmrc`; backend Python remains 3.12.3. Third-party actions use full commit SHAs, and the workflow has read-only repository permissions. The backend service uses the same pinned PostgreSQL/pgvector image as local infrastructure. Its known demo password belongs only to the disposable test database, not a cloud secret.
 
 PR CI requires no OpenRouter/Azure key and makes no paid model calls. It does not invoke `tools/runtime/check_provider.py`. Real-provider RAG evaluation gates will be added with ingestion/retrieval/evaluation, after the development set is calibrated and the holdout protocol is frozen. Current API tests use isolated schemas; they do not touch the user's procurement records.
 
-Browser smoke scripts currently target a running local app and seeded fixtures, with some using installed Chrome. They are retained as manual verification tools and are not presented as hosted CI coverage. A portable browser suite with controlled fixtures can be a later CI job.
+Browser smoke scripts in `tools/` still target a running local app and seeded fixtures, with some using installed Chrome. They are retained as manual verification tools and are not presented as hosted CI coverage. The portable Playwright suite (`frontend/e2e/`, `docs/browser-smoke.md`) now provides the hosted browser job: it starts its own disposable backend/frontend against an isolated database, uses Playwright's bundled Chromium, and needs no OpenRouter/Azure credentials.
 
 ### Reproduce the checks locally
 
@@ -41,6 +42,8 @@ python3 tools/check-documentation.py
 npm run prototype:build
 uv sync --project backend --locked --python 3.12.3
 uv run --project backend --locked python -m pytest backend/tests -q --junitxml=runtime-results/ci-backend.xml
+npm run smoke:install
+SMOKE_DATABASE_URL=postgresql://procurement:procurement-local-only@127.0.0.1:15433/smoke_procurement npm run smoke
 ```
 
 Use Node from `.nvmrc` and start the PostgreSQL service first (`docker compose -f infra/compose.yaml up -d postgres`). The local environment may use the existing `/tmp/procurement-runtime-venv`; the hosted job creates a clean backend environment. No `.env` is copied into CI. Passing local commands does not prove a hosted Actions run; hosted evidence is recorded in the [first Actions run](https://github.com/Chookai/procurement-system/actions/runs/40529064988).
