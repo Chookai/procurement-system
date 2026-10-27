@@ -2,6 +2,10 @@
 
 ## Agent skills
 
+### Pull request explanations
+
+For every pull request created, updated or presented for review, follow the `show-me` review requirements in `docs/development-agent-workflow.md`.
+
 ### Issue tracker
 
 Before creating, reading or updating specs and tickets, read `docs/agents/issue-tracker.md`. Work is tracked in GitHub Issues for `Chookai/procurement-system`.

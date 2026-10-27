@@ -70,6 +70,16 @@ Return check results, artifacts, limits and whether required evidence
 supports acceptance. New commits require appropriate rechecks.
 ```
 
+## Visual explanation for every pull request
+
+Before presenting any pull request for user review, use the `show-me` skill at `/home/kai/.agents/skills/show-me/SKILL.md`. This applies to changes implemented here and changes returned from Kilo. If the skill is unavailable in another harness, carry this requirement in its handoff and complete the explanation here before user review.
+
+Explain the problem, resulting behavior and relevant ownership or data flow with the smallest useful visual: a before/after diff, call tree, component/file tree, pseudocode or Mermaid diagram. Use a focused responsive HTML artifact for a dense flow or UI comparison; follow the product's light/dark design and open it for the user. Keep prose brief and place the explanation beside its visual.
+
+Include the visual directly in the PR description when it renders there, or link the committed HTML artifact with a short inline overview. Link the verification evidence and state what the user should inspect, along with any failed or unrun checks. Visual explanations support review; the candidate still needs the verification evidence defined above.
+
+When implementation changes the behavior or structure being explained, refresh the visual for the current candidate before requesting review. Every PR is ready for user review only when its explanation and evidence links describe that candidate.
+
 ## Maintained HTML records
 
 Keep `learnings/reference/agent-workflow-report.html` as the workflow/index report. For each actual Kilo candidate, write a separate verification report under `learnings/reports/<ticket>-<short-sha>.html` and link it from the report log. Include the tested snapshot, requirements, actual execution evidence, findings and limitations. A later candidate gets a new entry rather than overwriting the earlier verdict. No Kilo candidate has been submitted yet, and no automatic report generator or verifier dispatcher is installed; reports can be authored here as part of each verification.
