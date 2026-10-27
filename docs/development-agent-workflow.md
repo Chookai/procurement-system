@@ -1,6 +1,6 @@
 # Development workflow: plan here → implement in Kilo → verify here
 
-Accepted user direction, 27 October 2026. Planning, architecture decisions, specifications and local Markdown tickets stay in this conversation with the orchestrator. The user takes one ready ticket to Kilo Desktop with a cheaper model for implementation and initial testing. Verification returns here; the orchestrator owns the verification result and presents the evidence for the user's decision.
+Accepted user direction, 27 October 2026. Planning, architecture decisions, specifications and ticket planning stay in this conversation with the orchestrator; published specs and tickets are tracked in GitHub Issues for `Chookai/procurement-system`. The user takes one ready ticket to Kilo Desktop with a cheaper model for implementation and initial testing. Verification returns here; the orchestrator owns the verification result and presents the evidence for the user's decision.
 
 The existing application was built here before this handoff choice. No Kilo implementation or cross-harness integration has been tested yet. The interactive record is `learnings/reference/agent-workflow-report.html`.
 
@@ -20,7 +20,7 @@ Kilo's exact model, provider, authentication and filesystem/command permissions 
 
 ## Manual handoff first
 
-1. Prepare one implementation-ready local ticket here. Include scope, non-goals, acceptance examples, protected rules and relevant checks. Readiness is distinct from execution progress.
+1. Prepare one implementation-ready GitHub issue here. Include scope, non-goals, acceptance examples, protected rules and relevant checks. Readiness is distinct from execution progress.
 2. Start Kilo from the intended checkout/feature branch. Explicitly provide `AGENTS.md`, the ticket/spec and relevant glossary/ADRs. Do not assume another harness automatically loads these instructions.
 3. Kilo implements and tests. It must not relax approved acceptance criteria, disable checks, edit credentials into source or silently expand scope. Changes to tests/CI/review rules must be called out for independent inspection.
 4. Freeze the handoff with a candidate commit. Record the base and candidate SHAs, branch, ticket path, changed files, exact commands/exits, artifacts and incomplete checks. Stop Kilo editing while that snapshot is verified.
@@ -41,7 +41,7 @@ Keep the approved spec/review rules anchored to the trusted base. The candidate 
 ### Implementer handoff template
 
 ```text
-Ticket/spec path:
+GitHub issue URL / specification:
 Approved scope and non-goals:
 Base commit SHA:
 Feature branch / checkout:
@@ -60,7 +60,7 @@ Risks and how to undo the change:
 ### Return-to-verifier template
 
 ```text
-Verify ticket <path> against base <SHA> and candidate <SHA>.
+Verify GitHub issue <URL/number> against base <SHA> and candidate <SHA>.
 Implementation is frozen. Read trusted instructions/spec from the base.
 Run the required checks and devise independent negative cases.
 Do not repair application code or weaken tests during this pass.
@@ -78,7 +78,7 @@ Keep `learnings/reference/agent-workflow-report.html` as the workflow/index repo
 
 - Local Git baseline: `a592399`; existing application plus prepared GitHub Actions.
 - Local job-equivalent verification passed: 75 backend tests, Linux frontend/prototype builds and documentation checks. These are historical checks, not a result for a future Kilo change.
-- Hosted CI awaits a GitHub repository connection and first run.
+- The GitHub remote is connected; the code push and first hosted CI run currently await the GitHub workflow permission grant.
 - Existing browser scripts are local tools; portable fixture-based CI browser coverage is still proposed.
 - `REVIEW.md`, a trusted verification runner and the portable browser CI job are proposed additions, not installed by this document update.
 - No Kilo connector, automatic task dispatch, fresh review session, automatic repairs, merge or Azure deployment was launched.

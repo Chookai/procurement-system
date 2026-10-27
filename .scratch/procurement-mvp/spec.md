@@ -1,5 +1,7 @@
 # First durable procurement journey and evidence-backed agent
 
+> Archived migration snapshot (27 October 2026). The canonical specification and delivery map are [GitHub #1](https://github.com/Chookai/procurement-system/issues/1).
+
 Status: ready-for-agent
 Progress: In progress
 Type: Specification

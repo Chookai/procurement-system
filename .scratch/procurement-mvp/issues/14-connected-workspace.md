@@ -1,5 +1,7 @@
 # PROC-014: Connect the selected workspace to real records and agent responses
 
+> Archived migration snapshot (27 October 2026). Track current work in [PROC-014 / GitHub #15](https://github.com/Chookai/procurement-system/issues/15).
+
 Status: needs-triage
 Progress: Not started
 Type: Feature

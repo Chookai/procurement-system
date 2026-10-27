@@ -1,6 +1,6 @@
 # Triage labels
 
-| Canonical role | Local Status value | Meaning |
+| Canonical role | GitHub label | Meaning |
 |---|---|---|
 | needs-triage | needs-triage | Scope and priority need review. |
 | needs-info | needs-info | A decision or information is missing. |

@@ -1,5 +1,7 @@
 # PROC-003: Choose the workspace layout for implementation
 
+> Archived migration snapshot (27 October 2026). Track current work in [PROC-003 / GitHub #4](https://github.com/Chookai/procurement-system/issues/4).
+
 Status: ready-for-agent
 Progress: Done
 Type: Decision

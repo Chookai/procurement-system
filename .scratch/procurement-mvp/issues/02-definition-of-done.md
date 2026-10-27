@@ -1,5 +1,7 @@
 # PROC-002: Agree milestone acceptance and RAG release gates
 
+> Archived migration snapshot (27 October 2026). Track current work in [PROC-002 / GitHub #3](https://github.com/Chookai/procurement-system/issues/3).
+
 Status: ready-for-agent
 Progress: Done
 Type: Decision

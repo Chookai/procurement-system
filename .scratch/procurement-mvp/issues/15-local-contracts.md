@@ -1,5 +1,7 @@
 # PROC-015: Validate local Floci adapters and real Azure development contracts
 
+> Archived migration snapshot (27 October 2026). Track current work in [PROC-015 / GitHub #16](https://github.com/Chookai/procurement-system/issues/16).
+
 Status: needs-triage
 Progress: Not started
 Type: Infrastructure

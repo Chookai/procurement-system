@@ -1,0 +1,207 @@
+{
+  "repository": "Chookai/procurement-system",
+  "parent": {
+    "number": 1,
+    "url": "https://github.com/Chookai/procurement-system/issues/1"
+  },
+  "tickets": [
+    {
+      "legacy": "PROC-001",
+      "number": 2,
+      "url": "https://github.com/Chookai/procurement-system/issues/2",
+      "progress": "Done",
+      "readiness": "ready-for-agent",
+      "dependencies": [],
+      "source": ".scratch/procurement-mvp/issues/01-architecture.md"
+    },
+    {
+      "legacy": "PROC-002",
+      "number": 3,
+      "url": "https://github.com/Chookai/procurement-system/issues/3",
+      "progress": "Done",
+      "readiness": "ready-for-agent",
+      "dependencies": [
+        "01"
+      ],
+      "source": ".scratch/procurement-mvp/issues/02-definition-of-done.md"
+    },
+    {
+      "legacy": "PROC-003",
+      "number": 4,
+      "url": "https://github.com/Chookai/procurement-system/issues/4",
+      "progress": "Done",
+      "readiness": "ready-for-agent",
+      "dependencies": [],
+      "source": ".scratch/procurement-mvp/issues/03-ui-selection.md"
+    },
+    {
+      "legacy": "PROC-004",
+      "number": 5,
+      "url": "https://github.com/Chookai/procurement-system/issues/5",
+      "progress": "Done",
+      "readiness": "ready-for-agent",
+      "dependencies": [
+        "01",
+        "02",
+        "03"
+      ],
+      "source": ".scratch/procurement-mvp/issues/04-application-foundation.md"
+    },
+    {
+      "legacy": "PROC-005",
+      "number": 6,
+      "url": "https://github.com/Chookai/procurement-system/issues/6",
+      "progress": "In progress",
+      "readiness": "ready-for-agent",
+      "dependencies": [
+        "01",
+        "02",
+        "04"
+      ],
+      "source": ".scratch/procurement-mvp/issues/05-identity.md"
+    },
+    {
+      "legacy": "PROC-006",
+      "number": 7,
+      "url": "https://github.com/Chookai/procurement-system/issues/7",
+      "progress": "Done",
+      "readiness": "ready-for-agent",
+      "dependencies": [
+        "04",
+        "05"
+      ],
+      "source": ".scratch/procurement-mvp/issues/06-purchase-requisitions.md"
+    },
+    {
+      "legacy": "PROC-007",
+      "number": 8,
+      "url": "https://github.com/Chookai/procurement-system/issues/8",
+      "progress": "Done",
+      "readiness": "ready-for-agent",
+      "dependencies": [
+        "06"
+      ],
+      "source": ".scratch/procurement-mvp/issues/07-approval.md"
+    },
+    {
+      "legacy": "PROC-008",
+      "number": 9,
+      "url": "https://github.com/Chookai/procurement-system/issues/9",
+      "progress": "Done",
+      "readiness": "ready-for-agent",
+      "dependencies": [
+        "07"
+      ],
+      "source": ".scratch/procurement-mvp/issues/08-purchase-orders.md"
+    },
+    {
+      "legacy": "PROC-009",
+      "number": 10,
+      "url": "https://github.com/Chookai/procurement-system/issues/10",
+      "progress": "Done",
+      "readiness": "ready-for-agent",
+      "dependencies": [
+        "08"
+      ],
+      "source": ".scratch/procurement-mvp/issues/09-receipts.md"
+    },
+    {
+      "legacy": "PROC-010",
+      "number": 11,
+      "url": "https://github.com/Chookai/procurement-system/issues/11",
+      "progress": "Done",
+      "readiness": "ready-for-agent",
+      "dependencies": [
+        "08",
+        "09"
+      ],
+      "source": ".scratch/procurement-mvp/issues/10-invoices.md"
+    },
+    {
+      "legacy": "PROC-011",
+      "number": 12,
+      "url": "https://github.com/Chookai/procurement-system/issues/12",
+      "progress": "Not started",
+      "readiness": "needs-triage",
+      "dependencies": [
+        "04",
+        "05"
+      ],
+      "source": ".scratch/procurement-mvp/issues/11-ingestion.md"
+    },
+    {
+      "legacy": "PROC-012",
+      "number": 13,
+      "url": "https://github.com/Chookai/procurement-system/issues/13",
+      "progress": "Not started",
+      "readiness": "needs-info",
+      "dependencies": [
+        "05",
+        "06",
+        "08",
+        "09",
+        "10",
+        "11"
+      ],
+      "source": ".scratch/procurement-mvp/issues/12-rag-agent.md"
+    },
+    {
+      "legacy": "PROC-013",
+      "number": 14,
+      "url": "https://github.com/Chookai/procurement-system/issues/14",
+      "progress": "Not started",
+      "readiness": "needs-triage",
+      "dependencies": [
+        "02",
+        "11",
+        "12"
+      ],
+      "source": ".scratch/procurement-mvp/issues/13-evaluations.md"
+    },
+    {
+      "legacy": "PROC-014",
+      "number": 15,
+      "url": "https://github.com/Chookai/procurement-system/issues/15",
+      "progress": "Not started",
+      "readiness": "needs-triage",
+      "dependencies": [
+        "03",
+        "06",
+        "07",
+        "08",
+        "09",
+        "10",
+        "12"
+      ],
+      "source": ".scratch/procurement-mvp/issues/14-connected-workspace.md"
+    },
+    {
+      "legacy": "PROC-015",
+      "number": 16,
+      "url": "https://github.com/Chookai/procurement-system/issues/16",
+      "progress": "Not started",
+      "readiness": "needs-triage",
+      "dependencies": [
+        "01",
+        "04",
+        "11"
+      ],
+      "source": ".scratch/procurement-mvp/issues/15-local-contracts.md"
+    },
+    {
+      "legacy": "PROC-016",
+      "number": 17,
+      "url": "https://github.com/Chookai/procurement-system/issues/17",
+      "progress": "Not started",
+      "readiness": "needs-triage",
+      "dependencies": [
+        "02",
+        "05",
+        "13",
+        "14",
+        "15"
+      ],
+      "source": ".scratch/procurement-mvp/issues/16-production-readiness.md"
+    }
+  ]
+}

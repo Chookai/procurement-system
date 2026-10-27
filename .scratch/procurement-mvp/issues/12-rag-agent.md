@@ -1,5 +1,7 @@
 # PROC-012: Answer procurement questions with current state and cited evidence
 
+> Archived migration snapshot (27 October 2026). Track current work in [PROC-012 / GitHub #13](https://github.com/Chookai/procurement-system/issues/13).
+
 Status: needs-info
 Progress: Not started
 Type: RAG

@@ -1,5 +1,7 @@
 # PROC-016: Define and verify the later production-readiness milestone
 
+> Archived migration snapshot (27 October 2026). Track current work in [PROC-016 / GitHub #17](https://github.com/Chookai/procurement-system/issues/17).
+
 Status: needs-triage
 Progress: Not started
 Type: Milestone

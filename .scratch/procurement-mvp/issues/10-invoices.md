@@ -1,5 +1,7 @@
 # PROC-010: Capture and review supplier invoices without authorizing payment
 
+> Archived migration snapshot (27 October 2026). Track current work in [PROC-010 / GitHub #11](https://github.com/Chookai/procurement-system/issues/11).
+
 Status: ready-for-agent
 Progress: Done
 Type: Feature

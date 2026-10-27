@@ -1,5 +1,7 @@
 # PROC-007: Implement human approval and return for changes
 
+> Archived migration snapshot (27 October 2026). Track current work in [PROC-007 / GitHub #8](https://github.com/Chookai/procurement-system/issues/8).
+
 Status: ready-for-agent
 Progress: Done
 Type: Feature

@@ -1,4 +1,4 @@
-"""Generate a standalone, read-only ADS-themed view of local Markdown tickets."""
+"""Generate the archived, read-only ADS-themed local ticket snapshot."""
 import json
 import re
 from datetime import datetime, timezone

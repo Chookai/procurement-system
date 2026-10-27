@@ -1,5 +1,7 @@
 # PROC-001: Confirm the first milestone architecture
 
+> Archived migration snapshot (27 October 2026). Track current work in [PROC-001 / GitHub #2](https://github.com/Chookai/procurement-system/issues/2).
+
 Status: ready-for-agent
 Progress: Done
 Type: Decision

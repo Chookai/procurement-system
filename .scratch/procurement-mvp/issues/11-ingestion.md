@@ -1,5 +1,7 @@
 # PROC-011: Ingest versioned synthetic documents into a searchable corpus
 
+> Archived migration snapshot (27 October 2026). Track current work in [PROC-011 / GitHub #12](https://github.com/Chookai/procurement-system/issues/12).
+
 Status: needs-triage
 Progress: Not started
 Type: RAG

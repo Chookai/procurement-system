@@ -1,5 +1,7 @@
 # PROC-009: Record partial goods receipts and service acceptance
 
+> Archived migration snapshot (27 October 2026). Track current work in [PROC-009 / GitHub #10](https://github.com/Chookai/procurement-system/issues/10).
+
 Status: ready-for-agent
 Progress: Done
 Type: Feature

@@ -101,8 +101,12 @@ Backend tests use temporary database schemas; the application records remain in 
 
 ## Version control and CI
 
-Local Git history starts with the current implementation as a baseline. GitHub Actions is prepared in [.github/workflows/ci.yml](.github/workflows/ci.yml) for frontend/docs and PostgreSQL-backed backend checks. No remote is configured yet, so a hosted run remains pending. See the [interactive plan](learnings/reference/git-ci-cd-plan.html) and [execution details](docs/git-ci-cd.md). Azure deployment follows after infrastructure and release prerequisites are configured.
+Local Git history starts with the current implementation as a baseline. GitHub Actions is prepared in [.github/workflows/ci.yml](.github/workflows/ci.yml) for frontend/docs and PostgreSQL-backed backend checks. The remote is `Chookai/procurement-system`; the code push and hosted CI run currently await the GitHub workflow permission grant. See the [interactive plan](learnings/reference/git-ci-cd-plan.html) and [execution details](docs/git-ci-cd.md). Azure deployment follows after infrastructure and release prerequisites are configured.
 
 ## Development-agent handoff
 
 Planning/specs/tickets stay here with the orchestrator; Kilo Desktop with a cheaper model implements; verification returns here against a fixed candidate commit. See the [HTML workflow report](learnings/reference/agent-workflow-report.html) and [handoff contract](docs/development-agent-workflow.md). Kilo setup and automatic dispatch are not configured yet.
+
+## Ticket tracking
+
+[GitHub Issues](https://github.com/Chookai/procurement-system/issues) is authoritative. The [specification/delivery map](https://github.com/Chookai/procurement-system/issues/1) links all migrated tickets. Local `.scratch/procurement-mvp` files and tickets HTML are archived snapshots; see [the migration map](docs/github-issue-migration.md).

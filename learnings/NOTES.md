@@ -22,3 +22,5 @@
 - 27 October 2026: user authorized local Git baseline and selected GitHub Actions. Added an HTML Git/CI/CD review plan. Local job-equivalent checks passed from a clean export without .env; hosted CI needs a repository URL and CD needs Azure setup. No learner mastery inferred.
 
 - 27 October 2026: user chose this conversation as orchestrator for planning/specs/tickets, Kilo Desktop with a cheaper model for implementation, and verification back here. Keep a maintained HTML workflow report. Prior pi/Claude harness research is historical; exact Kilo configuration and automatic dispatch remain unvalidated.
+
+- 27 October 2026: user selected Chookai/procurement-system for GitHub Issues and approved migrating the spec plus 16 tickets, with default labels and existing single-context domain docs. Local ticket files become an archive. Code push awaits the CLI workflow permission grant; issue tracking can operate independently.

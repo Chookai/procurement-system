@@ -1,3 +1,3 @@
-# Specification draft superseded
+# Historical specification pointer
 
-The user approved the milestone plan on 23 October 2026. The canonical specification is [spec.md](spec.md). Runtime compatibility, layout selection and measured evaluation results remain separately tracked.
+The canonical specification is [GitHub #1](https://github.com/Chookai/procurement-system/issues/1). `spec.md` is retained as the local migration snapshot.

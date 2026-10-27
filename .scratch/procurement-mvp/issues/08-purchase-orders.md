@@ -1,5 +1,7 @@
 # PROC-008: Issue purchase orders with revision and reapproval history
 
+> Archived migration snapshot (27 October 2026). Track current work in [PROC-008 / GitHub #9](https://github.com/Chookai/procurement-system/issues/9).
+
 Status: ready-for-agent
 Progress: Done
 Type: Feature

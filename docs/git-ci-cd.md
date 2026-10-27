@@ -6,7 +6,7 @@
 
 Create one honest baseline commit of the existing PR/PO/GR/invoice implementation, tests, design/prototype sources, canonical learnings, local Markdown tickets, sanitized evidence and delivery foundation. Earlier implementation steps are not reconstructed into invented historical commits. Future work uses short feature branches and focused commits.
 
-Local Git is initialized on `main`, using the existing configured author identity. No remote has been supplied or configured, and no repository has been created or pushed externally. Connecting a GitHub repository is the next external step. Once connected, open pull requests and configure required checks for `Frontend and documentation` and `Backend with PostgreSQL`; repository rules are configured on GitHub, not established by the workflow file alone.
+Local Git is initialized on `main`, using the existing configured author identity. The user supplied the public repository `Chookai/procurement-system`; `origin` is configured. The first code push currently awaits GitHub workflow permission because the authenticated CLI token was rejected for uploading `.github/workflows/ci.yml`. No force push or history replacement is planned. Once connected, open pull requests and configure required checks for `Frontend and documentation` and `Backend with PostgreSQL`; repository rules are configured on GitHub, not established by the workflow file alone.
 
 Exclude `.env` secrets, generated local signing keys, dependencies, environments, caches and compiled/generated mirrors. Keep `.env.example`, lockfiles, source templates, canonical docs/tickets, and explicitly sanitized verification evidence. Reports retained in `runtime-results/` describe historical checks, not a current GitHub run. New CI reports use ignored `ci-*` paths.
 
@@ -43,7 +43,7 @@ uv sync --project backend --locked --python 3.12.3
 uv run --project backend --locked python -m pytest backend/tests -q --junitxml=runtime-results/ci-backend.xml
 ```
 
-Use Node from `.nvmrc` and start the PostgreSQL service first (`docker compose -f infra/compose.yaml up -d postgres`). The local environment may use the existing `/tmp/procurement-runtime-venv`; the hosted job creates a clean backend environment. No `.env` is copied into CI. Passing local commands does not prove a hosted Actions run; first-run evidence remains pending until the repository is connected and pushed.
+Use Node from `.nvmrc` and start the PostgreSQL service first (`docker compose -f infra/compose.yaml up -d postgres`). The local environment may use the existing `/tmp/procurement-runtime-venv`; the hosted job creates a clean backend environment. No `.env` is copied into CI. Passing local commands does not prove a hosted Actions run; first-run evidence remains pending until the permission grant and first successful push/run.
 
 ## Continuous deployment after deployment readiness
 

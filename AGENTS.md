@@ -4,7 +4,7 @@
 
 ### Issue tracker
 
-Before creating, reading or updating specs and tickets, read `docs/agents/issue-tracker.md`. Work is tracked as local Markdown under `.scratch/`.
+Before creating, reading or updating specs and tickets, read `docs/agents/issue-tracker.md`. Work is tracked in GitHub Issues for `Chookai/procurement-system`.
 
 ### Triage labels
 

@@ -1,5 +1,7 @@
 # PROC-004: Establish the React and FastAPI application boundary
 
+> Archived migration snapshot (27 October 2026). Track current work in [PROC-004 / GitHub #5](https://github.com/Chookai/procurement-system/issues/5).
+
 Status: ready-for-agent
 Progress: Done
 Type: Infrastructure

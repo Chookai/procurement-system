@@ -1,5 +1,7 @@
 # PROC-005: Enforce role permissions behind the API
 
+> Archived migration snapshot (27 October 2026). Track current work in [PROC-005 / GitHub #6](https://github.com/Chookai/procurement-system/issues/6).
+
 Status: ready-for-agent
 Progress: In progress
 Type: Security

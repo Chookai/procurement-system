@@ -1,5 +1,7 @@
 # PROC-013: Run versioned retrieval, answer and agent evaluations
 
+> Archived migration snapshot (27 October 2026). Track current work in [PROC-013 / GitHub #14](https://github.com/Chookai/procurement-system/issues/14).
+
 Status: needs-triage
 Progress: Not started
 Type: Evaluation

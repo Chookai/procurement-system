@@ -1,5 +1,7 @@
 # PROC-006: Persist purchase requisitions and their activity history
 
+> Archived migration snapshot (27 October 2026). Track current work in [PROC-006 / GitHub #7](https://github.com/Chookai/procurement-system/issues/7).
+
 Status: ready-for-agent
 Progress: Done
 Type: Feature
