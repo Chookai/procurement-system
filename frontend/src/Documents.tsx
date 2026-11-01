@@ -51,7 +51,7 @@ export function Documents({ auth, api }: { auth: Auth; api: Api }) {
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [deleting, setDeleting] = useState<string | null>(null);
-  const keys = useRef(new Map<string, string>());
+  const keys = useRef(new Map<string, { key: string; generation: number | undefined }>());
   const buyer = auth.user.role === "buyer";
   const replacement = items.find((d) => d.id === selected);
   async function refresh() {
@@ -101,19 +101,18 @@ export function Documents({ auth, api }: { auth: Auth; api: Api }) {
         .join("");
       const fingerprint = JSON.stringify([
         selected,
-        replacement?.generation,
         title,
         file.name,
         hash,
       ]);
-      let key = keys.current.get(fingerprint);
-      if (!key) {
-        key = crypto.randomUUID();
-        keys.current.set(fingerprint, key);
+      let pending = keys.current.get(fingerprint);
+      if (!pending) {
+        pending = { key: crypto.randomUUID(), generation: replacement?.generation };
+        keys.current.set(fingerprint, pending);
       }
       const params = new URLSearchParams({ filename: file.name, title });
       if (replacement)
-        params.set("expected_generation", String(replacement.generation));
+        params.set("expected_generation", String(pending.generation));
       const response = await fetch(
         "/api/v1/documents" +
           (replacement ? `/${replacement.id}/versions` : "") +
@@ -125,18 +124,21 @@ export function Documents({ auth, api }: { auth: Auth; api: Api }) {
           headers: {
             "Content-Type": "application/octet-stream",
             "X-CSRF-Token": auth.csrf_token,
-            "Idempotency-Key": key,
+            "Idempotency-Key": pending.key,
           },
           body: bytes,
         },
       );
       const body = await response.json();
-      if (!response.ok)
+      if (!response.ok) {
+        // A conflict ends this attempt; a later submission uses refreshed terms.
+        if (response.status === 409) keys.current.delete(fingerprint);
         throw Error(
           typeof body.detail === "string"
             ? body.detail
             : "Upload failed. Refresh and try again.",
         );
+      }
       keys.current.delete(fingerprint);
       setFile(null);
       setTitle("");
