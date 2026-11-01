@@ -82,6 +82,7 @@ class Worker:
 
     def renew(self, job):
         with self.db.connect() as c:
+            c.execute("SELECT id FROM ingestion_jobs WHERE id=%s FOR UPDATE", (job["id"],))
             row = c.execute(
                 """UPDATE ingestion_jobs SET lease_until=clock_timestamp()+(%s * interval '1 second')
                 WHERE id=%s AND lease_token=%s AND state='running' AND lease_until>clock_timestamp() RETURNING id""",
@@ -142,6 +143,7 @@ class Worker:
                     "SELECT id FROM documents WHERE id=(SELECT document_id FROM document_versions WHERE id=%s) FOR UPDATE",
                     (job["version_id"],),
                 )
+                c.execute("SELECT id FROM ingestion_jobs WHERE id=%s FOR UPDATE", (job["id"],))
                 # Rollback/publication failures return to a bounded retry. No exception body is persisted.
                 updated = c.execute(
                     """UPDATE ingestion_jobs SET state=%s,error_code='ingestion_failed',
@@ -170,6 +172,7 @@ class Worker:
                 "SELECT * FROM documents WHERE id=%s FOR UPDATE",
                 (version["document_id"],),
             ).fetchone()
+            c.execute("SELECT id FROM ingestion_jobs WHERE id=%s FOR UPDATE", (job["id"],))
             live = c.execute(
                 """SELECT id FROM ingestion_jobs WHERE id=%s AND lease_token=%s
                 AND state='running' AND lease_until>clock_timestamp() FOR UPDATE""",
