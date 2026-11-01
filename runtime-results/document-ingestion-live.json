@@ -1,0 +1,58 @@
+{
+  "timestamp": "2026-10-27T16:21:32.810479+00:00",
+  "scope": "Synthetic development checks; not a frozen holdout or RAG answer evaluation",
+  "checks": [
+    {
+      "check": "real Blob upload and complete index publication",
+      "status": "passed",
+      "documents": 3
+    },
+    {
+      "check": "labelled retrieval and original source",
+      "query": "Does invoice review authorize payment?",
+      "expected": "invoice-review.md",
+      "top1": "invoice-review.md",
+      "status": "passed",
+      "line_start": 1,
+      "line_end": 12
+    },
+    {
+      "check": "labelled retrieval and original source",
+      "query": "Who issues an approved PO revision?",
+      "expected": "po-revisions.md",
+      "top1": "po-revisions.md",
+      "status": "passed",
+      "line_start": 1,
+      "line_end": 9
+    },
+    {
+      "check": "labelled retrieval and original source",
+      "query": "What happens when a policy is deleted?",
+      "expected": "source-handling.txt",
+      "top1": "source-handling.txt",
+      "status": "passed",
+      "line_start": 1,
+      "line_end": 6
+    },
+    {
+      "check": "delete excludes evidence and cleans sources",
+      "status": "passed"
+    }
+  ],
+  "embedding_manifest": {
+    "pipeline": "utf8-lines-chars1200-overlap150-v1:openai/text-embedding-3-small:1536:openai",
+    "reported_model": "text-embedding-3-small",
+    "usage": {
+      "prompt_tokens": 8,
+      "total_tokens": 8,
+      "cost": 1.6e-07,
+      "is_byok": false,
+      "cost_details": {
+        "upstream_inference_cost": 1.6e-07,
+        "upstream_inference_prompt_cost": 1.6e-07,
+        "upstream_inference_completions_cost": 0
+      }
+    }
+  },
+  "status": "passed"
+}

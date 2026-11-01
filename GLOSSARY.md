@@ -48,3 +48,12 @@ Proposed replacement terms that await approval or issuance and do not yet replac
 
 **Outstanding quantity**:
 The ordered quantity still awaiting acceptance; damaged or rejected quantities do not fulfil the order.
+
+**Policy document**:
+A shared team procedure or rule used as supporting procurement evidence.
+
+**Source version**:
+An immutable edition of a document, preserved separately when its contents change.
+
+**Passage**:
+A traceable portion of a source version that can be cited as evidence.

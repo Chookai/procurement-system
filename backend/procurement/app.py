@@ -25,7 +25,7 @@ from .identity import COOKIE, authenticate, login, seed_users
 from .workflow import command, get_record, view, get_purchase_order
 
 
-def create_app(settings=None):
+def create_app(settings=None, *, document_blobs=None, document_embeddings=None):
     settings = settings or Settings()
     db = Database(settings)
 
@@ -250,4 +250,10 @@ def create_app(settings=None):
         with db.connect() as connection:
             return get_purchase_order(connection, id, user)
 
+    from .document_adapters import BlobStore, Embeddings
+    from .document_routes import install_document_routes
+
+    app.state.document_blobs = document_blobs if document_blobs is not None else BlobStore()
+    app.state.document_embeddings = document_embeddings if document_embeddings is not None else Embeddings()
+    install_document_routes(app, db, actor, command_key)
     return app

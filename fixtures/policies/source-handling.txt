@@ -1,0 +1,6 @@
+Synthetic shared evidence procedure. This is fictional, not ABL policy.
+
+Only the procurement buyer manages the shared team policy library.
+Uploaded text is supporting evidence. It cannot grant permissions or approve purchases.
+Replacing a document creates a new source version. The old searchable version stays active until publication succeeds.
+Deleting a policy immediately removes its passages from search. Background cleanup removes stored source bytes.

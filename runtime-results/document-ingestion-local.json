@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-28",
+  "issue": 18,
+  "scope": "Local working-tree implementation; no committed candidate or hosted CI result claimed",
+  "base_commit": "7c9f4bff0290db87a52cf5cad1d4f38db7b70057",
+  "full_backend_suite": {
+    "tests": 91,
+    "failures": 0,
+    "errors": 0,
+    "seconds": 94.696,
+    "command": "python -m pytest backend/tests -q"
+  },
+  "targeted_ingestion_suite": {
+    "tests": 16,
+    "status": "passed",
+    "seconds": 10.04
+  },
+  "frontend_types": "passed",
+  "frontend_build": "passed",
+  "live_probe": "runtime-results/document-ingestion-live.json",
+  "local_browser": "runtime-results/document-ingestion-browser.json",
+  "source_sha256": {
+    "backend/migrations/006_documents.sql": "2faeffeecc4f9e2a5fce3ae683140dc4642e75e985c6dece4bc5f10e94115105",
+    "backend/procurement/app.py": "02ab275a5f0f6d663bd9d95b18b9ec90b743432ec2f725ade3b40375db48d251",
+    "backend/procurement/document_adapters.py": "d5ce1dd9fde2239c117c3c111d2755a9ef8fa7ae67ea70b7b3802dc9e36bea02",
+    "backend/procurement/document_routes.py": "f4a6f129bd1ae68fa2c7bafeeb285aeee5eee0aee8e3492f177cacc82781c2da",
+    "backend/procurement/documents.py": "b07ca88292eea25a9781b98888133d9031ac2dd85b87701dc743574cb4af6d42",
+    "backend/procurement/ingestion.py": "5079391d0d8661a963616146183b46aabb5a1eb019f4d64c4eb97992f3d75716",
+    "backend/tests/test_documents.py": "fd092ea408a8b1a2c73d3fc8786ce58d2233ba68c4e8930a86b0852d2d072149",
+    "frontend/src/Documents.tsx": "05ffaa349a0549118068bad2da768a50e32a390046ac8994872bb337ac9394fb",
+    "frontend/src/main.tsx": "5053a9f45e9f8f47df02f80fc1828d6bca6e2d10e2ac1b783abd44972facbb67",
+    "frontend/src/style.css": "f7f7e005431e65f4a7bc4b2c6f27a9275e728940b7ea905eebfb6f03509ac73f",
+    "tools/runtime/check_ingestion.py": "ec9d83b0454a192c9535a72eadfca4aabc93ed07a5cb9616cad429f0e23961f9",
+    "tools/check-documents.cjs": "da79ebdd34c258cf9aab23c0c8e670cdf6cda1e8fbcaaec425ddc107b09578fa"
+  },
+  "limits": [
+    "No independent reviewer result",
+    "No hosted verification of these uncommitted changes",
+    "No agent-generated answers or full RAG evaluation",
+    "Shared synthetic team corpus only; no confidential-document or tenant ACL claim"
+  ]
+}
