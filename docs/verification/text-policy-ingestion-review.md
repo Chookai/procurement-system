@@ -38,11 +38,55 @@ Kilo CLI 7.8.18 used the exact `kilo/deepseek/deepseek-v4.1-flash` route. Both r
 | Default reasoning repair | Useful clock/bound logic; patch hunks did not apply directly. Adapted and strengthened, then regression tested. | 0.021341 | 158.164s |
 | Non-thinking repair | Rejected: contradictory patches and a 110-passage cap that does not cover the minimum advance. | 0.002813 | 13.804s |
 
-Review inference total: **USD 0.0351797394**. Repair proposals: **USD 0.0241536594**. Total Kilo-reported inference: **USD 0.0593333988**. These are CLI usage events, not reconciled billing. Codex per-review dollar cost and token accounting are unavailable, not zero. No relative dollar saving can be established. Setup, tests, CI and orchestration are excluded; some work ran concurrently. Two initial CLI setup/attachment failures occurred before model invocation.
+Review inference total: **USD 0.0351797394**. Repair proposals: **USD 0.0241536594**. Total Kilo-reported inference: **USD 0.0593333988**. These are CLI usage events, not reconciled billing. Codex API-equivalent estimates are now calculated from the local usage records below. Actual Codex subscription charges remain unknown; different work scopes prevent an equal-work dollar-saving claim. Kilo totals exclude test, CI and orchestration work; the separate Codex complete-task estimate includes recorded inference for that work. Some calls ran concurrently. Two initial CLI setup/attachment failures occurred before model invocation.
 
 Kilo's F5/F16 recommendation to renew/publish an expired lease conflicts with the approved fencing requirement and was rejected. Its long-batch example also assumed 16 sequential 20-second requests, while the adapter sends one bounded batch request. F2 relies on manual database mutation; F14 describes harmless duplicate idempotent cleanup. Other sections mostly state accepted scope or self-dismiss concerns; they are not counted as confirmed defects. Full raw final answer and both repair proposals are preserved beside `comparison.json`.
 
 Practical result for this case: Kilo provided a useful UI lead and repair material for about six cents, but execution and independent follow-up caught defects or unsafe advice that static model output alone did not resolve.
+
+## Codex versus Kilo: findings, resolution and cost
+
+The initial review snapshot was `3be28d71` for both systems. Codex used two GPT-6.1 Sol reviewer contexts with repository and execution access. Kilo used DeepSeek V4.1 Flash with a static 73,945-character bundle and tools denied. Do not equate narrative finding counts with confirmed defects.
+
+| Dimension | Codex review and orchestration | Kilo / DeepSeek V4.1 Flash |
+| --- | --- | --- |
+| Lease expiry and fencing | Reproduced expiry during document-lock wait; later caught renewal after a job-lock wait; verified rollback and repair. | Did not identify the actual transaction-clock/lock-wait defect in the initial review. F5/F16 instead recommended allowing expired leases; rejected. Its later prompted reasoning repair supplied useful real-clock logic but needed adaptation and follow-up. |
+| Valid source chunk limit | Independently reproduced valid 65,509-byte and 65,536-byte failures; verified complete reconstruction and citations after repair. | Did not identify the hard-cap defect in the initial review. After being supplied the defect, reasoning repair derived a useful bound; non-thinking repair's 110-passage bound was insufficient and rejected. |
+| Replacement retry identity | Standards reviewer initially suspected it; orchestrator then reproduced it in isolated Chromium and implemented/verified the repair. | F19 independently flagged the same UI risk. This was the useful review lead confirmed by execution; it is shared discovery, not a unique Kilo find. |
+| Finding quality | Two executed defect families in initial review, one optional standards smell; later verified the UI defect and renewal variant. | Nineteen labelled sections, mostly self-dismissed or accepted design choices. One confirmed UI concern; unsafe lease advice and unsupported concerns were excluded from confirmed counts. |
+| CI resolution | Ran/checks and inspected hosted CI; added six backend regressions. Diagnosed local 401s with an independent clock probe without relaxing authorization. | No hosted CI job was delegated to Kilo, and it did not execute tests or diagnose CI. Its CI-resolution ability is unmeasured in this case. |
+| Repair resolution | Orchestrator integrated/repaired changes, ran regressions and obtained independent follow-up before acceptance. | Repair proposals were reviewed, not applied blindly. Default patch hunks failed application; non-thinking output was contradictory and used an inadequate bound. |
+| Timing | Comparable isolated reviewer latency was not recorded. End-to-end work includes tests, CI waits and reporting. | Default review 244.687s with no answer; non-thinking retry 34.676s. Prompted repairs 158.164s and 13.804s. These are Kilo-reported elapsed values, not equal-work end-to-end timings. |
+
+There were no hosted CI failures requiring repair in this experiment. Earlier green CI still missed the edge cases; the new regression cases make them executable acceptance evidence. Do not credit either model with resolving a nonexistent hosted failure.
+
+### API-equivalent Codex cost
+
+Using [published GPT-6.1 Sol pricing](https://developers.openai.com/api/docs/models/gpt-6.1-sol), Standard rates per million tokens are USD 2.00 uncached input, 0.10 cached input and 10.00 output. Fast is twice Standard. The recorded cache-write count is zero; every request is below the 272K long-context threshold. Regional surcharges are not assumed. [Reasoning tokens](https://developers.openai.com/api/docs/guides/reasoning) are already part of output and are counted once.
+
+| Scope | Codex Standard API equivalent | Codex Fast sensitivity | Kilo-reported inference |
+| --- | ---: | ---: | ---: |
+| Initial independent reviews only | $0.405076 | $0.810152 | $0.0351797394, including unsuccessful reasoning attempt |
+| All reviewer work, including regressions, clock diagnosis and repair verification | $1.2272528 | $2.4545056 | No matching execution scope |
+| Main Codex agent: coordination, integration/repairs, CI inspection and reports | $2.4885896 | $4.9771792 | No matching orchestration scope |
+| Complete previous Codex task / all Kilo review and repair calls | $3.7158424 | $7.4316848 | $0.0593333988, static model calls only |
+
+The initial-review row is included in all-reviewer work; do not add it again. Likewise, the complete-task row already includes reviewers plus the main agent. These are estimated API equivalents, not Codex subscription charges. The service tier is not recorded, so Standard and Fast are shown as scenarios.
+
+| Whole-task token category | Recorded tokens | Standard rate / 1M | Estimated USD |
+| --- | ---: | ---: | ---: |
+| Uncached input | 181,756 | $2.00 | $0.363512 |
+| Cached input | 27,288,704 | $0.10 | $2.7288704 |
+| Output, including 19,883 reasoning tokens | 62,346 | $10.00 | $0.623460 |
+| Total | 27,532,806 | — | $3.7158424 |
+
+Method: sum each request's `last_token_usage`, not repeated cumulative totals. The 27,470,460 total input tokens include cached input; cached tokens are subtracted before uncached pricing. The scope begins with the user's “yes proceed” review authorization and ends before the later cost-calculation request. Earlier project work, this calculation/report update, unrecorded platform work and internal permission-review guardians without public model rates are excluded. The repeated large conversation context is reflected in the usage, so token totals are not unique source-text size.
+
+[Full usage calculation](ingestion-review-evidence/codex-api-equivalent.json) · [Combined machine-readable comparison](ingestion-review-evidence/comparison.json).
+
+### Assessment for this case
+
+Codex supplied deeper executable failure analysis and validated the repaired system. Kilo supplied an inexpensive corroborating UI lead and some useful prompted repair material, with unsafe or incomplete output caught by the verification loop. A sensible next experiment would give both reviewers the same tool access, task boundaries and required tests. This single unequal-work run does not establish a general quality ranking, CI-resolution winner or interchangeable cost saving.
 
 ## Executed verification and limits
 

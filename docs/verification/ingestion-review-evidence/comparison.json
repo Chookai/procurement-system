@@ -80,9 +80,14 @@
   "repair_cost_usd": 0.0241536594,
   "total_reported_cost_usd": 0.0593333988,
   "codex_cost_usd": null,
-  "cost_limitations": "Kilo-reported inference cost, not reconciled billing; no Codex per-review dollar meter; not zero. Setup/tests/CI/human orchestration excluded. Two CLI argument/attachment failures occurred before model invocation and have no inference usage event.",
+  "cost_limitations": "Kilo values are CLI-reported inference cost. Codex API-equivalent estimates apply published GPT-6.1 Sol rates to recorded request tokens; actual subscription billing and service tier are unknown. Standard and Fast estimates are separate. Current cost/report follow-ups and internal permission-review guardians are excluded. Workloads and tool access differ; this is not a controlled benchmark.",
   "comparison_limitations": "Single case; Codex reviewers could inspect repository/run tests, Kilo reviewed a supplied bundle with tools denied. Default review exhausted reasoning budget and produced no answer. This is not a controlled benchmark.",
   "final_code_candidate": "53648aff9a914b8df6f1ec4191d830ebb00c3abe",
   "review_input_sha256": "a6f2424cab4ef121d961aa984f4b01f9be65c0e8323584dc3403fea6568c52e3",
-  "review_input_characters": 73945
+  "review_input_characters": 73945,
+  "codex_api_equivalent_standard_usd": 3.7158424,
+  "codex_api_equivalent_fast_usd": 7.4316848,
+  "codex_initial_reviews_standard_usd": 0.405076,
+  "codex_all_reviewer_work_standard_usd": 1.2272528,
+  "codex_usage_detail": "codex-api-equivalent.json"
 }
