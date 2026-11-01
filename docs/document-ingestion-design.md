@@ -34,3 +34,11 @@ Use real PostgreSQL with isolated schemas and injected Blob/embedding adapters f
 ## Deliberate limits
 
 No PDF/OCR, office files, supplier attachments, malware scanner, Entra ID, external queue, Redis, agent answers or Foundry. Character-bounded deterministic chunks are a reproducible initial strategy, not a tuned production tokenizer. Exact vector scans suit this small corpus; add an ANN index only after relevance/latency evaluation. Text ingestion and retrieval do not establish answer quality, Azure parity, tenant isolation or production readiness.
+
+## Final premerge recovery fences
+
+The final GPT pass reproduced two additional recovery boundaries. Failed exhausted jobs reconcile both queued and processing versions, so a crash immediately after the final claim still permits buyer retry after lease expiry. Deleted and superseded versions remain protected.
+
+Upload and physical cleanup use the same per-source PostgreSQL advisory transaction lock. The uploader acquires it before rechecking current metadata and writing Blob bytes, and holds it through its final metadata/job transaction. Cleanup acquires it before deleting bytes and committing the cleanup marker. A waiting uploader rechecks deletion/generation before writing. If the uploader dies after a completed Blob write but before its final transaction, the fence releases and cleanup removes those bytes. Logical deletion requires no source lock and can complete while Blob I/O is paused. External adapter timeouts bound Blob I/O; this is local coordination, not proof of production Azure contracts.
+
+Lock order: upload source fence → document → version; logical deletion document → version; cleanup commits initial metadata reconciliation before taking each source fence → version. Cleanup never requests a document lock while holding a source/version lock.

@@ -20,7 +20,7 @@ A resumes → token A is rejected at publication</pre><p>Renewal happens between
   cancel ingestion work
   deny source downloads
 Worker cleanup removes original blobs; storage failures retry later</pre><p>A worker already calling the embedding provider must recheck the document and lease before publishing. Deletion cannot be undone by a stale worker.</p></div></section>
-<h2>Which files do what?</h2><pre class="code-block">frontend/src/Documents.tsx         library, upload, status and citations
+<div class="callout"><strong>Final GPT recovery review:</strong> exhausted final claims now make queued sources retryable, and source writes share a transaction fence with physical cleanup. Logical deletion can finish while source I/O is paused; cleanup waits for completed or crashed writes. <a href="../../docs/verification/final-gpt-premerge-review.md">Inspect the100-test review evidence</a>.</div><h2>Which files do what?</h2><pre class="code-block">frontend/src/Documents.tsx         library, upload, status and citations
 backend/procurement/
 ├── document_routes.py             HTTP + identity/CSRF + bounded transfer
 ├── documents.py                   source versions, access and retrieval

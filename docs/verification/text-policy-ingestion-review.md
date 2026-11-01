@@ -5,12 +5,13 @@
 Base: `7c9f4bff0290db87a52cf5cad1d4f38db7b70057`.
 Initial frozen review: `3be28d714211c33303f0feaed5b7ce7aa7fceb07`.
 First repair: `ca50fe05361de6c1eac65c5d7d1e31e8cfd0524d`.
-Final code candidate: `53648aff9a914b8df6f1ec4191d830ebb00c3abe`.
+Previously verified code: `53648aff9a914b8df6f1ec4191d830ebb00c3abe`.
+Final GPT-reviewed repair: `994d516ae6f3e336e91a518d892f072643a8e9a0`.
 Later commits publish review evidence; they do not change application behavior.
 
 ## Result and protected boundaries
 
-Three actionable defects were repaired: lease expiry across database lock waits, valid-source passage limits, and replacement upload retry identity. Independent review ran separately from implementation; follow-up review required a second lease repair. Shared-policy authorization, fixed embedding route, issued-PO rules and invoice/payment boundaries remain as specified. No merge, deployment, issue closure or agent-answer feature was performed. All original uncommitted work remains in the Linux checkout; the PR was prepared in an isolated clone.
+The initial review repaired three actionable defects: lease expiry across database lock waits, valid-source passage limits, and replacement upload retry identity. A subsequent user-authorized final GPT pass found and repaired two more recovery/cleanup defects; see the final-pass evidence below. Independent review ran separately from implementation; follow-up review required a second lease repair. Shared-policy authorization, fixed embedding route, issued-PO rules and invoice/payment boundaries remain as specified. The user subsequently authorized merging after final GPT review. Current merge status is recorded in PR #20; no deployment or agent-answer feature is part of this change. All original uncommitted work remains in the Linux checkout; the PR was prepared in an isolated clone.
 
 ## Standards
 
@@ -96,6 +97,12 @@ Codex supplied deeper executable failure analysis and validated the repaired sys
 - Local full-suite failures are recorded, not relabelled as passes: initial 89 passed/2 failed; repeat 90 passed/1 failed. Failures were transient authentication errors in unchanged procurement tests. An independent pure JWT probe recorded six immature-token errors across 680,963 roundtrips, coincident with backward wall-clock steps around 0.85s. Identity, configuration and locks are unchanged from base. No authentication relaxation or host-clock changes were made.
 - The exact final hosted SHA and result are recorded in [PR checks](https://github.com/Chookai/procurement-system/pull/20/checks) and the PR description after the final evidence commit. Follow the latest head, not the earlier passing runs.
 - No fresh full upload/search/replacement/delete browser journey with real embeddings, paid live ingestion probe, frozen retrieval holdout, answer evaluator or hosted failing-artifact test was run in this review. Historical implementation probes remain explicitly historical. The new browser retry test intercepts every API call and uses synthetic responses; it does not prove real provider availability.
+
+## Final GPT review and merge authorization
+
+The later final pass reviewed `077b8eb8`, reproduced a queued final-claim crash and a source-write/cleanup race, and repaired both in code candidate `994d516a`. The three new normal/crash regression cases fail before repair and pass afterward. Local full backend: **100 passed**. Independent document verification: **25 passed**. Both fresh GPT reviewers report no remaining blocker in the repair.
+
+[Final review, lock-order explanation and evidence](final-gpt-premerge-review.md). The initial model comparison above remains an earlier controlled snapshot of work; its cost totals exclude this additional review/repair/merge turn. Latest hosted checks and merge SHA are attached to PR #20. Broader ingestion, identity/agent and milestone tickets remain open.
 
 ## Reproduce
 

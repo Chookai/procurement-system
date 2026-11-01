@@ -86,3 +86,9 @@ This uses an isolated schema and unique Blob prefix, and cleans only its own sou
 The local browser script `tools/check-documents.cjs` follows upload, publication, search, replacement, deletion and read-only reviewer behavior with separate Chromium. It checks light/dark and 390px layout, and saves `runtime-results/document-ingestion-browser.json`. Its local installed-Chrome dependency is explicit; Kilo's portable CI browser task is separate and this script is not added to hosted CI. Existing backend CI automatically discovers the credential-free ingestion tests; no workflow change is required for them.
 
 No PDF/OCR, agent tools/answers, full RAG eval runner, dedicated rate limits, tracing pipeline, production identity, confidential documents, real Azure contracts or deployment is implemented here. The current upload size, exact vector scans and bounded corpus list suit the small local milestone. User review and broader ticket/milestone acceptance remain outstanding.
+
+## Final GPT review before merge
+
+The final code candidate `994d516a` adds recovery for a crash between a final job claim and marking the version processing, plus shared source-write/cleanup fencing. Logical deletion remains independent of external source I/O. The new regression cases cover normal late-upload rejection and simulated process death immediately after Blob write.
+
+Fresh local results on disposable PostgreSQL: **100 backend tests passed**; independent GPT follow-up ran **25 document tests, all passed**. Three newly added cases fail against the prior `077b8eb8` snapshot and pass on the fix. These are fake-adapter tests, not paid-provider or Azure verification. [Final review evidence](verification/final-gpt-premerge-review.md) records the tested snapshots, commands, limits and merge authorization. Latest hosted status and final merge commit are recorded on PR #20.

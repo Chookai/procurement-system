@@ -1,0 +1,36 @@
+{
+  "base": "7c9f4bff0290db87a52cf5cad1d4f38db7b70057",
+  "reviewed_prior_head": "077b8eb87eda134e3de50e383de5e08dc234bed9",
+  "fixed_code_candidate": "994d516ae6f3e336e91a518d892f072643a8e9a0",
+  "review": "Final GPT Standards and Spec reviewers in fresh contexts",
+  "findings": [
+    {
+      "severity": "P2",
+      "finding": "Crash after final claim leaves queued version unretryable",
+      "status": "reproduced_and_fixed"
+    },
+    {
+      "severity": "P2",
+      "finding": "Late source write races physical cleanup marker",
+      "status": "reproduced_and_fixed"
+    }
+  ],
+  "before": {
+    "tests_failed": 3,
+    "candidate": "077b8eb8"
+  },
+  "after": {
+    "new_regressions_passed": 3,
+    "full_backend_passed": 100,
+    "full_backend_seconds": 97.11,
+    "independent_documents_passed": 25,
+    "independent_documents_seconds": 21.62
+  },
+  "environment": "Locked Python dependencies; disposable pinned PostgreSQL/pgvector with temporary storage, port25433; UUID test schemas; fake external adapters",
+  "limits": [
+    "No paid provider calls or live-browser rerun in final pass",
+    "Final hosted CI is attached to the current PR head after documentation commit",
+    "Historical review-cost estimate excludes this additional final GPT review/repair/merge turn"
+  ],
+  "merge_authorization": "User explicitly authorized GPT review and merging in this chat"
+}
