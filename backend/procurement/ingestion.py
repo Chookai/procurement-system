@@ -8,7 +8,7 @@ from uuid import NAMESPACE_URL, uuid4, uuid5
 from .config import Settings
 from .database import Database
 from .document_adapters import MAX_BYTES, PIPELINE, BlobStore, Embeddings, validate_vectors
-from .documents import event, source_text
+from .documents import event, lock_source_bytes, source_text
 
 LEASE_SECONDS = 120
 MAX_ATTEMPTS = 3
@@ -239,7 +239,7 @@ class Worker:
         """Bounded cleanup; original superseded evidence is retained for historical citations."""
         with self.db.connect() as c:
             c.execute("""UPDATE document_versions v SET state='failed',error_code='attempts_exhausted'
-                FROM ingestion_jobs j WHERE j.version_id=v.id AND j.state='failed' AND v.state='processing'""")
+                FROM ingestion_jobs j WHERE j.version_id=v.id AND j.state='failed' AND v.state IN ('queued','processing')""")
             c.execute("""UPDATE document_versions v SET state='superseded',error_code='upload_expired' FROM documents d
                 WHERE v.document_id=d.id AND v.state='uploading' AND v.created_at<now()-interval '1 hour'""")
             rows = c.execute("""SELECT v.* FROM document_versions v JOIN documents d ON d.id=v.document_id
@@ -247,13 +247,20 @@ class Worker:
                     (SELECT 1 FROM ingestion_jobs j WHERE j.version_id=v.id))) AND v.cleaned_at IS NULL
                 ORDER BY v.created_at LIMIT 20""").fetchall()
         for v in rows:
-            try:
-                self.blobs.delete(v["blob_key"])
-            except Exception:
-                continue
             with self.db.connect() as c:
+                lock_source_bytes(c, v["blob_key"])
+                current = c.execute(
+                    "SELECT cleaned_at FROM document_versions WHERE id=%s FOR UPDATE",
+                    (v["id"],),
+                ).fetchone()
+                if current["cleaned_at"] is not None:
+                    continue
+                try:
+                    self.blobs.delete(v["blob_key"])
+                except Exception:
+                    continue
                 c.execute(
-                    "UPDATE document_versions SET cleaned_at=now() WHERE id=%s",
+                    "UPDATE document_versions SET cleaned_at=clock_timestamp() WHERE id=%s",
                     (v["id"],),
                 )
         return len(rows)

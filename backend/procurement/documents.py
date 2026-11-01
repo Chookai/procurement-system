@@ -15,6 +15,13 @@ def buyer(user):
         raise HTTPException(403, "Only the procurement buyer manages team policies")
 
 
+def lock_source_bytes(connection, blob_key):
+    # Source writes and physical cleanup share one transaction-scoped fence.
+    connection.execute(
+        "SELECT pg_advisory_xact_lock(hashtextextended(%s,31))", (blob_key,)
+    )
+
+
 def source_text(filename, content):
     if (
         not filename
@@ -154,14 +161,30 @@ def upload(
                 (user["id"], key, fingerprint, version_id),
             )
             event(c, document_id, version_id, user, "source_reserved")
-    try:
-        blobs.put(v["blob_key"], content)
-    except Exception:
-        # Retain a tracked pending upload; a same-key retry can recover it.
-        raise HTTPException(
-            503, "Source storage unavailable; retry with the same upload key"
-        ) from None
     with db.connect() as c:
+        lock_source_bytes(c, v["blob_key"])
+        # Cleanup may have completed while this uploader waited for its source.
+        # Revalidate before writing; deletion itself never waits on this fence.
+        state = c.execute(
+            """SELECT v.state,d.deleted_at,d.generation FROM document_versions v
+            JOIN documents d ON d.id=v.document_id WHERE v.id=%s""",
+            (v["id"],),
+        ).fetchone()
+        if (
+            state["deleted_at"]
+            or state["generation"] != v["generation"]
+            or state["state"] in ("superseded", "deleted")
+        ):
+            raise HTTPException(409, "Document changed during upload")
+        if state["state"] != "uploading":
+            return detail(c, document_id)
+        try:
+            blobs.put(v["blob_key"], content)
+        except Exception:
+            # Reservation already committed; a same-key retry can recover it.
+            raise HTTPException(
+                503, "Source storage unavailable; retry with the same upload key"
+            ) from None
         d = c.execute(
             "SELECT * FROM documents WHERE id=%s FOR UPDATE", (document_id,)
         ).fetchone()
@@ -173,7 +196,8 @@ def upload(
             or d["generation"] != v["generation"]
             or current["state"] in ("superseded", "deleted")
         ):
-            # A tracked orphan is cleaned by the worker; never enqueue stale content.
+            # Keep the fence until this rejection commits. Cleanup then deletes
+            # the completed write, even if the uploader dies before this point.
             c.execute(
                 "UPDATE document_versions SET cleaned_at=NULL WHERE id=%s", (v["id"],)
             )
