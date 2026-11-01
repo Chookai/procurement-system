@@ -1,0 +1,14 @@
+AssertionError [ERR_ASSERTION]: 503 retry must reuse its original idempotency key after refresh
++ actual - expected
+
++ '249e0d46-7c22-4885-b634-55fb522b855b'
+- '21307dda-efcd-41f0-8347-3490e97a7396'
+
+    at /tmp/procurement-browser-review/replacement-retry.cjs:10:173 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '249e0d46-7c22-4885-b634-55fb522b855b',
+  expected: '21307dda-efcd-41f0-8347-3490e97a7396',
+  operator: 'strictEqual',
+  diff: 'simple'
+}

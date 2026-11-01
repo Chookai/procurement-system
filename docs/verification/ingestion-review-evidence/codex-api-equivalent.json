@@ -1,0 +1,260 @@
+{
+  "scope": "Previous authorized review/repair/CI/report turn only; current pricing follow-up and earlier project turns excluded.",
+  "period_utc": {
+    "start": "2026-11-01T05:05:26.166Z",
+    "end_exclusive": "2026-11-01T05:38:33.658Z"
+  },
+  "model": "gpt-6.1-sol",
+  "rates_usd_per_million": {
+    "standard": {
+      "uncached_input": 2,
+      "cached_input": 0.1,
+      "cache_write_30m": 2.5,
+      "output_including_reasoning": 10
+    },
+    "fast_multiplier": 2
+  },
+  "pricing_checked_date": "2026-11-01",
+  "pricing_source": "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
+  "reasoning_billing_source": "https://developers.openai.com/api/docs/guides/reasoning",
+  "method": "Sum last_token_usage for each recorded request, not cumulative totals. Cached input is a subset of input; reasoning is a subset of output and is not added twice. Cache-write tokens recorded as zero. All requests below 272K long-context threshold.",
+  "components": {
+    "orchestrator": {
+      "source_filename": "rollout-2026-10-29T12-23-38-01a185e6-3470-70e2-930d-a2fe6722e3c3.jsonl",
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "requests": 96,
+      "min_request_input_tokens": 108462,
+      "max_request_input_tokens": 246802,
+      "usage": {
+        "input_tokens": 18268923,
+        "cached_input_tokens": 18157056,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 44915,
+        "reasoning_output_tokens": 15190,
+        "total_tokens": 18313838
+      },
+      "uncached_input_tokens": 111867,
+      "standard_api_equivalent_usd": 2.4885896,
+      "fast_api_equivalent_usd": 4.9771792,
+      "turns": [
+        {
+          "started_at": "2026-11-01T05:05:26.166Z",
+          "turn_id": "01a1957f-8489-7592-88f7-991bf2902c99",
+          "usage": {
+            "input_tokens": 18268923,
+            "cached_input_tokens": 18157056,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 44915,
+            "reasoning_output_tokens": 15190,
+            "total_tokens": 18313838
+          },
+          "uncached_input_tokens": 111867,
+          "standard_api_equivalent_usd": 2.4885896,
+          "fast_api_equivalent_usd": 4.9771792
+        }
+      ]
+    },
+    "standards_reviewer": {
+      "source_filename": "rollout-2026-11-01T13-07-22-01a19581-4f52-7762-9465-2fe9a8bba41a.jsonl",
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "requests": 17,
+      "min_request_input_tokens": 139918,
+      "max_request_input_tokens": 170801,
+      "usage": {
+        "input_tokens": 2767095,
+        "cached_input_tokens": 2736000,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4270,
+        "reasoning_output_tokens": 954,
+        "total_tokens": 2771365
+      },
+      "uncached_input_tokens": 31095,
+      "standard_api_equivalent_usd": 0.37849,
+      "fast_api_equivalent_usd": 0.75698,
+      "turns": [
+        {
+          "started_at": "2026-11-01T05:07:25.362Z",
+          "turn_id": "01a19581-5519-7591-9a16-fd71782699bf",
+          "usage": {
+            "input_tokens": 920933,
+            "cached_input_tokens": 900736,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 1735,
+            "reasoning_output_tokens": 550,
+            "total_tokens": 922668
+          },
+          "uncached_input_tokens": 20197,
+          "standard_api_equivalent_usd": 0.1478176,
+          "fast_api_equivalent_usd": 0.2956352
+        },
+        {
+          "started_at": "2026-11-01T05:13:09.787Z",
+          "turn_id": "01a19586-976e-7390-a050-5e149eacf216",
+          "usage": {
+            "input_tokens": 1846162,
+            "cached_input_tokens": 1835264,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 2535,
+            "reasoning_output_tokens": 404,
+            "total_tokens": 1848697
+          },
+          "uncached_input_tokens": 10898,
+          "standard_api_equivalent_usd": 0.2306724,
+          "fast_api_equivalent_usd": 0.4613448
+        }
+      ]
+    },
+    "spec_reviewer": {
+      "source_filename": "rollout-2026-11-01T13-07-29-01a19581-6c6a-7f31-b2d3-ba91451d8e7b.jsonl",
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "requests": 38,
+      "min_request_input_tokens": 140132,
+      "max_request_input_tokens": 184144,
+      "usage": {
+        "input_tokens": 6434442,
+        "cached_input_tokens": 6395648,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 13161,
+        "reasoning_output_tokens": 3739,
+        "total_tokens": 6447603
+      },
+      "uncached_input_tokens": 38794,
+      "standard_api_equivalent_usd": 0.8487628,
+      "fast_api_equivalent_usd": 1.6975256,
+      "turns": [
+        {
+          "started_at": "2026-11-01T05:07:34.445Z",
+          "turn_id": "01a19581-7238-73c2-8d6e-b3588c8f0b90",
+          "usage": {
+            "input_tokens": 1860445,
+            "cached_input_tokens": 1841664,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 3553,
+            "reasoning_output_tokens": 1191,
+            "total_tokens": 1863998
+          },
+          "uncached_input_tokens": 18781,
+          "standard_api_equivalent_usd": 0.2572584,
+          "fast_api_equivalent_usd": 0.5145168
+        },
+        {
+          "started_at": "2026-11-01T05:10:14.176Z",
+          "turn_id": "01a19583-f11c-77a2-8720-34497ce8709e",
+          "usage": {
+            "input_tokens": 984298,
+            "cached_input_tokens": 977792,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 3477,
+            "reasoning_output_tokens": 881,
+            "total_tokens": 987775
+          },
+          "uncached_input_tokens": 6506,
+          "standard_api_equivalent_usd": 0.1455612,
+          "fast_api_equivalent_usd": 0.2911224
+        },
+        {
+          "started_at": "2026-11-01T05:19:09.673Z",
+          "turn_id": "01a1958c-15bb-7861-9858-d9ed71d635ba",
+          "usage": {
+            "input_tokens": 1045768,
+            "cached_input_tokens": 1038464,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 2481,
+            "reasoning_output_tokens": 879,
+            "total_tokens": 1048249
+          },
+          "uncached_input_tokens": 7304,
+          "standard_api_equivalent_usd": 0.1432644,
+          "fast_api_equivalent_usd": 0.2865288
+        },
+        {
+          "started_at": "2026-11-01T05:20:51.445Z",
+          "turn_id": "01a1958d-a38c-7b92-9eb9-e95a16d2ca42",
+          "usage": {
+            "input_tokens": 715472,
+            "cached_input_tokens": 713472,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 1844,
+            "reasoning_output_tokens": 494,
+            "total_tokens": 717316
+          },
+          "uncached_input_tokens": 2000,
+          "standard_api_equivalent_usd": 0.0937872,
+          "fast_api_equivalent_usd": 0.1875744
+        },
+        {
+          "started_at": "2026-11-01T05:22:32.407Z",
+          "turn_id": "01a1958f-2e13-7473-a574-c26be35800f0",
+          "usage": {
+            "input_tokens": 1828459,
+            "cached_input_tokens": 1824256,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 1806,
+            "reasoning_output_tokens": 294,
+            "total_tokens": 1830265
+          },
+          "uncached_input_tokens": 4203,
+          "standard_api_equivalent_usd": 0.2088916,
+          "fast_api_equivalent_usd": 0.4177832
+        }
+      ]
+    }
+  },
+  "initial_independent_reviews": {
+    "usage": {
+      "input_tokens": 2781378,
+      "cached_input_tokens": 2742400,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 5288,
+      "reasoning_output_tokens": 1741,
+      "total_tokens": 2786666
+    },
+    "uncached_input_tokens": 38978,
+    "standard_api_equivalent_usd": 0.405076,
+    "fast_api_equivalent_usd": 0.810152
+  },
+  "all_reviewer_work": {
+    "usage": {
+      "input_tokens": 9201537,
+      "cached_input_tokens": 9131648,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 17431,
+      "reasoning_output_tokens": 4693,
+      "total_tokens": 9218968
+    },
+    "uncached_input_tokens": 69889,
+    "standard_api_equivalent_usd": 1.2272528,
+    "fast_api_equivalent_usd": 2.4545056
+  },
+  "all_codex_work": {
+    "usage": {
+      "input_tokens": 27470460,
+      "cached_input_tokens": 27288704,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 62346,
+      "reasoning_output_tokens": 19883,
+      "total_tokens": 27532806
+    },
+    "uncached_input_tokens": 181756,
+    "standard_api_equivalent_usd": 3.7158424,
+    "fast_api_equivalent_usd": 7.4316848
+  },
+  "kilo_reported_usd": {
+    "reviews": 0.0351797394,
+    "repair_proposals": 0.0241536594,
+    "total": 0.0593333988
+  },
+  "limitations": [
+    "API-equivalent estimate based on local recorded usage, not actual ChatGPT/Codex subscription billing.",
+    "Service tier was not recorded; Standard estimate and Fast 2x sensitivity are shown. No regional surcharge assumed.",
+    "Internal automatic permission-review guardians use codex-auto-review without an identified public API rate and are excluded.",
+    "Unrecorded failed requests, compaction or other hidden platform work cannot be priced from these records.",
+    "Codex did broader orchestration, executable verification, repair and reporting. Kilo was limited to static supplied bundles. This is not an equal-work model benchmark."
+  ]
+}

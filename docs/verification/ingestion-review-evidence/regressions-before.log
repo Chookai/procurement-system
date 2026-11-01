@@ -1,0 +1,89 @@
+FF                                                                       [100%]
+=================================== FAILURES ===================================
+______ test_publication_rechecks_real_lease_time_after_document_lock_wait ______
+
+isolated = (<procurement.database.Database object at 0x70165f50d1c0>, <starlette.testclient.TestClient object at 0x70165f2abfb0>, <test_documents.MemoryBlobs object at 0x70165f50d100>, <test_documents.TestEmbeddings object at 0x70165f50d0d0>)
+
+    def test_publication_rechecks_real_lease_time_after_document_lock_wait(isolated):
+        db, client, blobs, embeddings = isolated
+        document = upload(client, login(client)).json()
+        job = Worker(db, blobs, embeddings).claim()
+        publication_name = 'review_publish_' + uuid4().hex
+        worker = Worker(NamedDatabase(db.settings, publication_name), blobs, embeddings)
+        with db.connect() as connection:
+            version = connection.execute('SELECT * FROM document_versions WHERE id=%s', (job['version_id'],)).fetchone()
+        executor = ThreadPoolExecutor(max_workers=1)
+        future = None
+        try:
+            with db.connect() as connection:
+                connection.execute("UPDATE ingestion_jobs SET lease_until=clock_timestamp()+interval '2 seconds' WHERE id=%s", (job['id'],))
+            with db.connect() as blocker:
+                blocker.execute('SELECT id FROM documents WHERE id=%s FOR UPDATE', (document['id'],))
+                try:
+                    future = executor.submit(worker.publish, job, version, chunks('Synthetic policy'), embeddings.embed(['Synthetic policy']))
+                    deadline = time.monotonic() + 10
+                    with db.connect() as observer:
+                        while True:
+                            observer.execute('SELECT pg_stat_clear_snapshot()')
+                            waiting = observer.execute("SELECT count(*) AS n FROM pg_stat_activity WHERE application_name=%s AND wait_event_type='Lock'", (publication_name,)).fetchone()['n']
+                            if waiting:
+                                break
+                            assert time.monotonic() < deadline, 'Publication never waited for document row lock'
+                            time.sleep(0.02)
+                        while True:
+                            expired = observer.execute('SELECT lease_until<clock_timestamp() AS expired FROM ingestion_jobs WHERE id=%s', (job['id'],)).fetchone()['expired']
+                            if expired:
+                                break
+                            assert time.monotonic() < deadline, 'Lease did not expire within test deadline'
+                            time.sleep(0.02)
+                finally:
+                    blocker.commit()
+>           with pytest.raises(LeaseLost):
+E           Failed: DID NOT RAISE LeaseLost
+
+backend/tests/test_document_regressions.py:87: Failed
+_______ test_valid_near_limit_source_chunks_with_complete_line_coverage ________
+
+    def test_valid_near_limit_source_chunks_with_complete_line_coverage():
+        text = ('x' * 600 + '\n') * 109
+        content = text.encode('utf-8')
+        assert len(content) == 65509 < 65536
+        assert source_text('valid-policy.txt', content) == text
+>       passages = chunks(text)
+                   ^^^^^^^^^^^^
+
+backend/tests/test_document_regressions.py:102: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+text = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx...xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n'
+
+    def chunks(text):
+        text = text.replace("\r\n", "\n").replace("\r", "\n")
+        result, start = [], 0
+        while start < len(text):
+            end = min(start + 1200, len(text))
+            if end < len(text):
+                boundary = text.rfind("\n", start + 600, end)
+                if boundary > start:
+                    end = boundary + 1
+            body = text[start:end]
+            if body.strip():
+                result.append(
+                    {
+                        "body": body,
+                        "line_start": text.count("\n", 0, start) + 1,
+                        "line_end": text.count("\n", 0, max(start, end - 1)) + 1,
+                    }
+                )
+            if end == len(text):
+                break
+            start = end - 150
+        if not result or len(result) > 80:
+>           raise ValueError("Invalid passage count")
+E           ValueError: Invalid passage count
+
+backend/procurement/ingestion.py:39: ValueError
+=========================== short test summary info ============================
+FAILED backend/tests/test_document_regressions.py::test_publication_rechecks_real_lease_time_after_document_lock_wait
+FAILED backend/tests/test_document_regressions.py::test_valid_near_limit_source_chunks_with_complete_line_coverage
+2 failed in 4.02s

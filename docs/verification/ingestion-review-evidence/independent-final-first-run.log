@@ -1,0 +1,32 @@
+.................F....                                                   [100%]
+=================================== FAILURES ===================================
+_____________ test_newest_generation_and_delete_fence_publication ______________
+
+env = (<fastapi.applications.FastAPI object at 0x73d1582727b0>, <test_documents.MemoryBlobs object at 0x73d158272810>, <test...>, <starlette.testclient.TestClient object at 0x73d1582e0f80>, <procurement.ingestion.Worker object at 0x73d1582e2990>)
+
+    def test_newest_generation_and_delete_fence_publication(env):
+        app, _, embed, client, worker = env
+        h = login(client)
+        doc = upload(client, h).json()["id"]
+        old = worker.claim()
+        with app.state.db.connect() as c:
+            v = c.execute(
+                "SELECT * FROM document_versions WHERE id=%s", (old["version_id"],)
+            ).fetchone()
+>       assert (
+            upload(
+                client,
+                {**h, "Idempotency-Key": str(uuid4())},
+                b"New version policy",
+                doc=doc,
+            ).status_code
+            == 202
+        )
+E       AssertionError: assert 401 == 202
+E        +  where 401 = <Response [401 Unauthorized]>.status_code
+E        +    where <Response [401 Unauthorized]> = upload(<starlette.testclient.TestClient object at 0x73d1582e0f80>, {'X-CSRF-Token': 'lScnIt9koha8pNpQzvhoiTppMsF78os2_CvayvvCbMg', 'Idempotency-Key': 'ffdc7352-40aa-415b-ae3e-2e5adaad4976'}, b'New version policy', doc='1d7827de-dad0-4035-a2c6-585278cf7269')
+
+backend/tests/test_documents.py:288: AssertionError
+=========================== short test summary info ============================
+FAILED backend/tests/test_documents.py::test_newest_generation_and_delete_fence_publication
+1 failed, 21 passed in 18.75s

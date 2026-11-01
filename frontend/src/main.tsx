@@ -1,3 +1,4 @@
+import { Documents } from "./Documents";
 import React, { useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import Button from "@atlaskit/button/new";
@@ -265,6 +266,14 @@ function RequisitionForm({
 }
 
 function App() {
+  const [documentsOpen, setDocumentsOpen] = useState(() => new URLSearchParams(location.search).get("view") === "documents");
+  function navigateWorkspace(documents: boolean) {
+    setDocumentsOpen(documents);
+    const url = new URL(location.href);
+    if (documents) url.searchParams.set("view", "documents");
+    else url.searchParams.delete("view");
+    history.replaceState({}, "", url);
+  }
   const [theme, setTheme] = useState<"light" | "dark">(() =>
     new URLSearchParams(location.search).get("theme") === "dark"
       ? "dark"
@@ -631,9 +640,10 @@ function App() {
       <div className="shell">
         <nav className="sidebar" aria-label="Workspace">
           <div className="eyebrow">Procurement</div>
-          <a className="active" href="/">
+          <a className={!documentsOpen ? "active" : ""} href="/" onClick={e=>{e.preventDefault();navigateWorkspace(false)}}>
             Purchase requisitions
           </a>
+          <a className={documentsOpen ? "active" : ""} href="/?view=documents" onClick={e=>{e.preventDefault();navigateWorkspace(true)}}>Policy documents</a>
           <p className="muted">One team. Clear handoffs.</p>
           <div className="scope">
             <strong>First application slice</strong>
@@ -642,6 +652,7 @@ function App() {
           </div>
         </nav>
         <main className="workspace">
+          {documentsOpen ? <Documents key={auth.user.id} auth={auth} api={api} /> : <>
           <div className="page-heading">
             <div>
               <div className="eyebrow">Workspace / Procurement</div>
@@ -1224,6 +1235,7 @@ function App() {
               </p>
             </div>
           </aside>
+          </>}
         </main>
       </div>
     </div>

@@ -1,0 +1,105 @@
+{
+  "jwt_version": "2.15.1",
+  "start_time": 1793510026.993264,
+  "start_monotonic": 230843.396590536,
+  "end_time": 1793510060.2608066,
+  "end_monotonic": 230878.397548821,
+  "errors": [
+    {
+      "error": "ImmatureSignatureError",
+      "iat": 1793510041,
+      "generation_time": 1793510041.354011,
+      "observe_time": 1793510040.500196,
+      "monotonic": 230857.757447051
+    },
+    {
+      "error": "ImmatureSignatureError",
+      "iat": 1793510041,
+      "generation_time": 1793510041.351378,
+      "observe_time": 1793510040.5032632,
+      "monotonic": 230857.760514332
+    },
+    {
+      "error": "ImmatureSignatureError",
+      "iat": 1793510041,
+      "generation_time": 1793510041.345755,
+      "observe_time": 1793510040.514706,
+      "monotonic": 230857.771957619
+    },
+    {
+      "error": "ImmatureSignatureError",
+      "iat": 1793510040,
+      "generation_time": 1793510040.674502,
+      "observe_time": 1793510039.8234818,
+      "monotonic": 230857.960223135
+    },
+    {
+      "error": "ImmatureSignatureError",
+      "iat": 1793510040,
+      "generation_time": 1793510040.702146,
+      "observe_time": 1793510039.8286362,
+      "monotonic": 230857.96537709
+    },
+    {
+      "error": "ImmatureSignatureError",
+      "iat": 1793510040,
+      "generation_time": 1793510040.696592,
+      "observe_time": 1793510039.845235,
+      "monotonic": 230857.981976094
+    }
+  ],
+  "error_count": 6,
+  "workers": [
+    {
+      "worker": 0,
+      "iterations": 233021,
+      "backward_samples": [
+        {
+          "previous": 1793510041.3540115,
+          "current": 1793510040.5002007,
+          "backward_seconds": 0.8538107872009277
+        },
+        {
+          "previous": 1793510040.696592,
+          "current": 1793510039.8452387,
+          "backward_seconds": 0.8513534069061279
+        }
+      ],
+      "backward_sample_count": 2
+    },
+    {
+      "worker": 1,
+      "iterations": 221863,
+      "backward_samples": [
+        {
+          "previous": 1793510041.345755,
+          "current": 1793510040.5147123,
+          "backward_seconds": 0.8310427665710449
+        },
+        {
+          "previous": 1793510040.6745028,
+          "current": 1793510039.8235338,
+          "backward_seconds": 0.8509690761566162
+        }
+      ],
+      "backward_sample_count": 2
+    },
+    {
+      "worker": 2,
+      "iterations": 226079,
+      "backward_samples": [
+        {
+          "previous": 1793510041.3513782,
+          "current": 1793510040.5032678,
+          "backward_seconds": 0.8481104373931885
+        },
+        {
+          "previous": 1793510040.702146,
+          "current": 1793510039.82864,
+          "backward_seconds": 0.8735060691833496
+        }
+      ],
+      "backward_sample_count": 2
+    }
+  ]
+}

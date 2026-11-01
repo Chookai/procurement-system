@@ -1,0 +1,146 @@
+FFF                                                                      [100%]
+=================================== FAILURES ===================================
+____ test_queued_version_recovers_after_crash_immediately_after_final_claim ____
+
+env = (<fastapi.applications.FastAPI object at 0x7d820d6f9730>, <test_documents.MemoryBlobs object at 0x7d820d6f9610>, <test...>, <starlette.testclient.TestClient object at 0x7d820d2ced50>, <procurement.ingestion.Worker object at 0x7d820d2ceba0>)
+
+    def test_queued_version_recovers_after_crash_immediately_after_final_claim(env):
+        app, blobs, embeddings, client, worker = env
+        headers = login(client)
+        response = upload(client, headers)
+        assert response.status_code == 202
+        document = response.json()
+        version_id = document['versions'][0]['id']
+        with app.state.db.connect() as c:
+            c.execute('UPDATE ingestion_jobs SET attempts=2 WHERE version_id=%s', (version_id,))
+        job = worker.claim()
+        assert job['attempts'] == 3
+        # Simulate process death before run_once starts its separate processing transaction.
+        with app.state.db.connect() as c:
+            before = c.execute('SELECT state FROM document_versions WHERE id=%s', (version_id,)).fetchone()
+            assert before['state'] == 'queued'
+            c.execute("UPDATE ingestion_jobs SET lease_until=clock_timestamp()-interval '1 second' WHERE id=%s", (job['id'],))
+        assert worker.claim() is None
+        worker.cleanup()
+        details = client.get('/api/v1/documents/' + document['id']).json()
+        retry = client.post('/api/v1/documents/' + document['id'] + '/retry', headers=headers)
+        print('After expired final claim:', details['versions'][0], 'retry_status=', retry.status_code, 'retry_body=', retry.json())
+        assert details['versions'][0]['job_state'] == 'failed'
+>       assert details['versions'][0]['state'] == 'failed'
+E       AssertionError: assert 'queued' == 'failed'
+E         
+E         - failed
+E         + queued
+
+/tmp/procurement-final-gpt-red/backend/tests/test_document_crash_recovery.py:31: AssertionError
+----------------------------- Captured stdout call -----------------------------
+After expired final claim: {'id': 'ea475206-f61c-495b-b410-4d65f66346a2', 'generation': 1, 'filename': 'policy.md', 'content_hash': '2c5fb27b2733f898d060036a53407cf6f2fee6ddc38dbc6bd45ba82052a14abd', 'pipeline': 'utf8-lines-chars1200-overlap150-v1:openai/text-embedding-3-small:1536:openai', 'state': 'queued', 'error_code': None, 'created_at': '2026-11-01T14:56:04.487601+00:00', 'attempts': 3, 'job_state': 'failed'} retry_status= 409 retry_body= {'detail': 'Only the latest failed version can be retried', 'request_id': '041f6eba-4480-464a-b5f6-d0f87817b244'}
+__________ test_cleanup_fences_inflight_source_put[normal-rejection] ___________
+
+crash = False
+
+    @pytest.mark.parametrize('crash', [False, True], ids=['normal-rejection', 'process-death-after-put'])
+    def test_cleanup_fences_inflight_source_put(crash):
+        settings = Settings(schema='review_source_fence_' + uuid4().hex, secret='review-' + 'x'*48)
+        blobs, embeddings = BlockingPut(crash), TestEmbeddings()
+        app = create_app(settings, document_blobs=blobs, document_embeddings=embeddings)
+        pool = ThreadPoolExecutor(max_workers=2)
+        try:
+            with TestClient(app):
+                db = app.state.db
+                with db.connect() as c:
+                    buyer = c.execute("SELECT * FROM users WHERE role='buyer'").fetchone()
+                put_future = pool.submit(upload, db, blobs, buyer, str(uuid4()), 'race.txt', 'Synthetic policy', b'Synthetic policy only.')
+                assert blobs.entered.wait(10)
+                with db.connect() as c:
+                    doc = c.execute('SELECT * FROM documents').fetchone()
+                # Delete must complete while external put is paused.
+                remove(db, buyer, doc['id'], 1)
+                cleanup_name = 'source_cleanup_' + uuid4().hex
+                worker = Worker(NamedDatabase(settings, cleanup_name), blobs, embeddings)
+                clean_future = pool.submit(worker.cleanup)
+                deadline = time.monotonic() + 5
+                waiting_for_source_lock = False
+                while not blobs.deleted.is_set():
+                    with db.connect() as c:
+                        waiting_for_source_lock = bool(c.execute("SELECT 1 FROM pg_stat_activity WHERE application_name=%s AND wait_event_type='Lock' AND wait_event='advisory'", (cleanup_name,)).fetchone())
+                    if waiting_for_source_lock:
+                        break
+                    assert time.monotonic() < deadline, 'Cleaner neither deleted nor waited for source advisory lock'
+                    time.sleep(0.01)
+                deleted_while_put_blocked = blobs.deleted.is_set()
+                blobs.release.set()
+                if crash:
+                    with pytest.raises(SimulatedProcessDeath):
+                        put_future.result(timeout=10)
+                else:
+                    with pytest.raises(HTTPException) as rejected:
+                        put_future.result(timeout=10)
+                    assert rejected.value.status_code == 409
+                clean_future.result(timeout=10)
+                worker.cleanup()
+                print({'crash': crash, 'deleted_while_put_blocked': deleted_while_put_blocked, 'advisory_wait_observed': waiting_for_source_lock, 'remaining_blobs': len(blobs.data)})
+>               assert not deleted_while_put_blocked, 'Cleanup performed Blob deletion while an upload could still write the same key'
+E               AssertionError: Cleanup performed Blob deletion while an upload could still write the same key
+E               assert not True
+
+/tmp/procurement-final-gpt-red/backend/tests/test_document_source_cleanup.py:92: AssertionError
+----------------------------- Captured stdout call -----------------------------
+{'crash': False, 'deleted_while_put_blocked': True, 'advisory_wait_observed': False, 'remaining_blobs': 0}
+_______ test_cleanup_fences_inflight_source_put[process-death-after-put] _______
+
+crash = True
+
+    @pytest.mark.parametrize('crash', [False, True], ids=['normal-rejection', 'process-death-after-put'])
+    def test_cleanup_fences_inflight_source_put(crash):
+        settings = Settings(schema='review_source_fence_' + uuid4().hex, secret='review-' + 'x'*48)
+        blobs, embeddings = BlockingPut(crash), TestEmbeddings()
+        app = create_app(settings, document_blobs=blobs, document_embeddings=embeddings)
+        pool = ThreadPoolExecutor(max_workers=2)
+        try:
+            with TestClient(app):
+                db = app.state.db
+                with db.connect() as c:
+                    buyer = c.execute("SELECT * FROM users WHERE role='buyer'").fetchone()
+                put_future = pool.submit(upload, db, blobs, buyer, str(uuid4()), 'race.txt', 'Synthetic policy', b'Synthetic policy only.')
+                assert blobs.entered.wait(10)
+                with db.connect() as c:
+                    doc = c.execute('SELECT * FROM documents').fetchone()
+                # Delete must complete while external put is paused.
+                remove(db, buyer, doc['id'], 1)
+                cleanup_name = 'source_cleanup_' + uuid4().hex
+                worker = Worker(NamedDatabase(settings, cleanup_name), blobs, embeddings)
+                clean_future = pool.submit(worker.cleanup)
+                deadline = time.monotonic() + 5
+                waiting_for_source_lock = False
+                while not blobs.deleted.is_set():
+                    with db.connect() as c:
+                        waiting_for_source_lock = bool(c.execute("SELECT 1 FROM pg_stat_activity WHERE application_name=%s AND wait_event_type='Lock' AND wait_event='advisory'", (cleanup_name,)).fetchone())
+                    if waiting_for_source_lock:
+                        break
+                    assert time.monotonic() < deadline, 'Cleaner neither deleted nor waited for source advisory lock'
+                    time.sleep(0.01)
+                deleted_while_put_blocked = blobs.deleted.is_set()
+                blobs.release.set()
+                if crash:
+                    with pytest.raises(SimulatedProcessDeath):
+                        put_future.result(timeout=10)
+                else:
+                    with pytest.raises(HTTPException) as rejected:
+                        put_future.result(timeout=10)
+                    assert rejected.value.status_code == 409
+                clean_future.result(timeout=10)
+                worker.cleanup()
+                print({'crash': crash, 'deleted_while_put_blocked': deleted_while_put_blocked, 'advisory_wait_observed': waiting_for_source_lock, 'remaining_blobs': len(blobs.data)})
+>               assert not deleted_while_put_blocked, 'Cleanup performed Blob deletion while an upload could still write the same key'
+E               AssertionError: Cleanup performed Blob deletion while an upload could still write the same key
+E               assert not True
+
+/tmp/procurement-final-gpt-red/backend/tests/test_document_source_cleanup.py:92: AssertionError
+----------------------------- Captured stdout call -----------------------------
+{'crash': True, 'deleted_while_put_blocked': True, 'advisory_wait_observed': False, 'remaining_blobs': 1}
+=========================== short test summary info ============================
+FAILED ../../../../tmp/procurement-final-gpt-red/backend/tests/test_document_crash_recovery.py::test_queued_version_recovers_after_crash_immediately_after_final_claim
+FAILED ../../../../tmp/procurement-final-gpt-red/backend/tests/test_document_source_cleanup.py::test_cleanup_fences_inflight_source_put[normal-rejection]
+FAILED ../../../../tmp/procurement-final-gpt-red/backend/tests/test_document_source_cleanup.py::test_cleanup_fences_inflight_source_put[process-death-after-put]
+3 failed in 3.35s

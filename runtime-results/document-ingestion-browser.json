@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "scope": "Real local UI/Blob/worker/embeddings; synthetic browser fixture deleted",
+  "checks": [
+    "buyer uploads",
+    "worker publishes",
+    "search citation",
+    "source replacement",
+    "delete",
+    "reviewer read-only",
+    "390px layout",
+    "light/dark",
+    "no page errors"
+  ],
+  "page_errors": []
+}
