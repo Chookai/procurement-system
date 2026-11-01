@@ -1,0 +1,88 @@
+{
+  "candidate_reviewed": "3be28d714211c33303f0feaed5b7ce7aa7fceb07",
+  "repaired_code_candidate": "ca50fe05361de6c1eac65c5d7d1e31e8cfd0524d",
+  "kilo_cli": "7.8.18",
+  "runs": [
+    {
+      "run": "review",
+      "model": "kilo/deepseek/deepseek-v4.1-flash",
+      "variant": "default",
+      "finish_reason": "length",
+      "reported_cost_usd": 0.0285696372,
+      "tokens": {
+        "total": 52518,
+        "input": 18470,
+        "output": 0,
+        "reasoning": 32000,
+        "cache": {
+          "read": 2048,
+          "write": 0
+        }
+      },
+      "provider_elapsed_ms": 244687
+    },
+    {
+      "run": "review-instant",
+      "model": "kilo/deepseek/deepseek-v4.1-flash",
+      "variant": "none",
+      "finish_reason": "stop",
+      "reported_cost_usd": 0.0066101022,
+      "tokens": {
+        "total": 24346,
+        "input": 18445,
+        "output": 3853,
+        "reasoning": 0,
+        "cache": {
+          "read": 2048,
+          "write": 0
+        }
+      },
+      "provider_elapsed_ms": 34676
+    },
+    {
+      "run": "repair",
+      "model": "kilo/deepseek/deepseek-v4.1-flash",
+      "variant": "default",
+      "finish_reason": "stop",
+      "reported_cost_usd": 0.0213405972,
+      "tokens": {
+        "total": 31910,
+        "input": 3350,
+        "output": 1482,
+        "reasoning": 25030,
+        "cache": {
+          "read": 2048,
+          "write": 0
+        }
+      },
+      "provider_elapsed_ms": 158164
+    },
+    {
+      "run": "repair-instant",
+      "model": "kilo/deepseek/deepseek-v4.1-flash",
+      "variant": "none",
+      "finish_reason": "stop",
+      "reported_cost_usd": 0.0028130622,
+      "tokens": {
+        "total": 8138,
+        "input": 3325,
+        "output": 2765,
+        "reasoning": 0,
+        "cache": {
+          "read": 2048,
+          "write": 0
+        }
+      },
+      "provider_elapsed_ms": 13804
+    }
+  ],
+  "review_cost_usd": 0.0351797394,
+  "repair_cost_usd": 0.0241536594,
+  "total_reported_cost_usd": 0.0593333988,
+  "codex_cost_usd": null,
+  "cost_limitations": "Kilo-reported inference cost, not reconciled billing; no Codex per-review dollar meter; not zero. Setup/tests/CI/human orchestration excluded. Two CLI argument/attachment failures occurred before model invocation and have no inference usage event.",
+  "comparison_limitations": "Single case; Codex reviewers could inspect repository/run tests, Kilo reviewed a supplied bundle with tools denied. Default review exhausted reasoning budget and produced no answer. This is not a controlled benchmark.",
+  "final_code_candidate": "53648aff9a914b8df6f1ec4191d830ebb00c3abe",
+  "review_input_sha256": "a6f2424cab4ef121d961aa984f4b01f9be65c0e8323584dc3403fea6568c52e3",
+  "review_input_characters": 73945
+}

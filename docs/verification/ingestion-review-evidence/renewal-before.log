@@ -1,0 +1,55 @@
+F.                                                                       [100%]
+=================================== FAILURES ===================================
+_____________ test_renewal_rechecks_expiry_after_job_row_lock_wait _____________
+
+isolated = (<procurement.database.Database object at 0x7786fe6c78f0>, <starlette.testclient.TestClient object at 0x7786fe27a780>, <test_documents.MemoryBlobs object at 0x7786fe6c7830>, <test_documents.TestEmbeddings object at 0x7786fe6c7800>)
+
+    def test_renewal_rechecks_expiry_after_job_row_lock_wait(isolated):
+>       attempt_after_locked_job_expires(*isolated, 'renew')
+
+/tmp/procurement-review-spec/test_renewal_regression.py:58: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+db = <procurement.database.Database object at 0x7786fe6c78f0>
+client = <starlette.testclient.TestClient object at 0x7786fe27a780>
+blobs = <test_documents.MemoryBlobs object at 0x7786fe6c7830>
+embeddings = <test_documents.TestEmbeddings object at 0x7786fe6c7800>
+action = 'renew'
+
+    def attempt_after_locked_job_expires(db, client, blobs, embeddings, action):
+        document = upload(client, login(client)).json()
+        job = Worker(db, blobs, embeddings).claim()
+        name = 'review_job_wait_' + uuid4().hex
+        worker = Worker(NamedDatabase(db.settings, name), blobs, embeddings)
+        with db.connect() as connection:
+            version = connection.execute('SELECT * FROM document_versions WHERE id=%s', (job['version_id'],)).fetchone()
+            connection.execute("UPDATE ingestion_jobs SET lease_until=clock_timestamp()+interval '2 seconds' WHERE id=%s", (job['id'],))
+        with ThreadPoolExecutor(max_workers=1) as executor:
+            with db.connect() as blocker:
+                blocker.execute('SELECT id FROM ingestion_jobs WHERE id=%s FOR UPDATE', (job['id'],))
+                try:
+                    if action == 'renew':
+                        future = executor.submit(worker.renew, job)
+                    else:
+                        future = executor.submit(worker.publish, job, version, chunks('Synthetic policy'), embeddings.embed(['Synthetic policy']))
+                    deadline = time.monotonic() + 10
+                    with db.connect() as observer:
+                        while True:
+                            observer.execute('SELECT pg_stat_clear_snapshot()')
+                            waiting = observer.execute("SELECT count(*) AS n FROM pg_stat_activity WHERE application_name=%s AND wait_event_type='Lock'", (name,)).fetchone()['n']
+                            if waiting:
+                                break
+                            assert time.monotonic() < deadline, 'Worker never waited on the held job row lock'
+                            time.sleep(0.02)
+                        while not observer.execute('SELECT lease_until<clock_timestamp() AS expired FROM ingestion_jobs WHERE id=%s', (job['id'],)).fetchone()['expired']:
+                            assert time.monotonic() < deadline, 'Lease did not expire before test deadline'
+                            time.sleep(0.02)
+                finally:
+                    blocker.commit()
+>           with pytest.raises(LeaseLost):
+E           Failed: DID NOT RAISE LeaseLost
+
+/tmp/procurement-review-spec/test_renewal_regression.py:49: Failed
+=========================== short test summary info ============================
+FAILED ../../../../tmp/procurement-review-spec/test_renewal_regression.py::test_renewal_rechecks_expiry_after_job_row_lock_wait
+1 failed, 1 passed in 6.85s
