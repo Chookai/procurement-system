@@ -6,6 +6,8 @@
     "prototype:build": "npm --prefix mockups/procurement-ui-prototype run build",
     "app": "npm --prefix frontend run dev",
     "app:build": "npm --prefix frontend run build",
-    "app:check": "npm --prefix frontend run check"
+    "app:check": "npm --prefix frontend run check",
+    "smoke": "npm --prefix frontend run smoke",
+    "smoke:install": "npm --prefix frontend run smoke:install"
   }
 }

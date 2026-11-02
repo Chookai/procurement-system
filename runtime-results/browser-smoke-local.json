@@ -1,0 +1,88 @@
+{
+  "ticket": "Browser smoke suite and CI job",
+  "base_commit": "7c9f4bff0290db87a52cf5cad1d4f38db7b70057",
+  "branch": "feat/browser-smoke-ci",
+  "date": "2026-10-28",
+  "environment": {
+    "os": "Windows 11",
+    "node": "24.13.0",
+    "npm": "11.6.2",
+    "playwright": "1.56.1",
+    "chromium": "Playwright bundled headless shell 141.0.7390.37 (build v1194)",
+    "python": "3.12.3 (uv 0.11.23)",
+    "postgres": "pgvector/pgvector:0.8.7-pg17 (disposable, isolated)",
+    "credentials": "none (no OpenRouter or Azure keys used)"
+  },
+  "isolation": {
+    "database": "postgresql://procurement:procurement-local-only@127.0.0.1:15433/smoke_procurement (throwaway container; the user's procurement database was never used)",
+    "frontend_port": 5275,
+    "backend_port": 8101,
+    "users": "synthetic seeded users from backend seed_users (aina, ben, chloe, dinesh, eva)"
+  },
+  "checks": [
+    {
+      "name": "Playwright smoke suite (empty database)",
+      "command": "npx playwright test",
+      "cwd": "frontend",
+      "env": "SMOKE_DATABASE_URL=<isolated smoke database>",
+      "exit_code": 0,
+      "result": "1 passed",
+      "note": "Schema dropped before the run to prove the suite works on an empty database."
+    },
+    {
+      "name": "Playwright smoke suite (repeat run)",
+      "command": "npx playwright test",
+      "cwd": "frontend",
+      "exit_code": 0,
+      "result": "1 passed",
+      "note": "Repeatable; unique request titles avoid collisions with earlier records."
+    },
+    {
+      "name": "Frontend TypeScript check",
+      "command": "npm run app:check",
+      "exit_code": 0,
+      "result": "passed"
+    },
+    {
+      "name": "Frontend production build",
+      "command": "npm run app:build",
+      "exit_code": 0,
+      "result": "passed"
+    },
+    {
+      "name": "Documentation link check",
+      "command": "python tools/check-documentation.py",
+      "exit_code": 0,
+      "result": "Learning links passed: 22 HTML files"
+    },
+    {
+      "name": "Tracked-file hygiene",
+      "command": "python tools/check-repository.py",
+      "exit_code": 0,
+      "result": "219 files; no matching credentials"
+    },
+    {
+      "name": "Actions workflow validation",
+      "command": "actionlint .github/workflows/ci.yml",
+      "exit_code": 0,
+      "result": "passed"
+    },
+    {
+      "name": "Backend test suite",
+      "command": "uv run --project backend --locked python -m pytest backend/tests -q",
+      "exit_code": 0,
+      "result": "75 passed in 181.85s",
+      "note": "Run against the isolated smoke database; backend code was not modified."
+    }
+  ],
+  "not_run": [
+    "Hosted GitHub Actions run for the new browser-smoke job (no push performed from this clone).",
+    "tools/build-ticket-register.py locally (needs the prototype node_modules dependency tree; not installed in this local run). It is installed in CI.",
+    "Real OpenRouter/Azure provider calls (out of scope; no credentials)."
+  ],
+  "artifacts": {
+    "playwright_report": "frontend/playwright-report/index.html (generated, gitignored)",
+    "failure_evidence": "frontend/test-results/ (trace, screenshot, video; generated, gitignored)",
+    "ci_artifact_on_failure": "browser-smoke-report (Playwright report + test-results), 14-day retention"
+  }
+}
